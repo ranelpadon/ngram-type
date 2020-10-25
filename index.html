@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ngram Type</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+    <!-- jQuery required by Bootstrap. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Darkly Bootstrap Theme! https://bootswatch.com/darkly/-->
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
+    <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Ngrams Sources. -->
+    <script src="bigrams.js"></script>
+    <script src="trigrams.js"></script>
+    <script src="quadgrams.js"></script>
+    <script src="words-50.js"></script>
+    <script src="words-200.js"></script>
+
+    <!-- VueJS -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <style>
+        body {
+            margin: 20px;
+        }
+
+        .card-body {
+            margin-top: 20px;
+        }
+
+        .card-header {
+            background-color: #2D394D;
+            color: #FF7A90;
+        }
+
+        legend.combination,
+        legend.repetition {
+            margin-bottom: 0;
+        }
+
+        .expected-phrase,
+        input.form-control-lg {
+            max-width: 60rem;
+            margin: auto;
+            height: auto;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+        }
+
+        input.form-control-lg,
+        .word {
+            font-size: 40px;
+            height: 60px;
+            text-align: center;
+        }
+
+        .word.mb-3 {
+            height: auto;
+            margin-bottom: 0 !important;
+            padding: 10px;
+        }
+
+        fieldset {
+            margin: -20px 30px 20px;
+        }
+
+        h4 {
+            margin-bottom: 40px;
+        }
+
+        .input-fields {
+            margin: auto
+            max-width: 60rem;
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        .form-group input::-webkit-input-placeholder ,
+        .form-group input::-moz-placeholder {
+            font-size: 20px;
+        }
+
+        .form-control.incorrect-input {
+            background-color: #E7BBDC;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="card">
+        <div class="card-body">
+            <div class="center">
+                <fieldset>
+                    <legend>Source</legend>
+                    <div class="form-group">
+                        <div class="custom-control custom-radio">
+                            <input v-model="data.source" type="radio" id="bi-grams" name="customRadio" class="custom-control-input" value="bigrams">
+                            <label class="custom-control-label" for="bi-grams">Top 50 Bigrams</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input v-model="data.source" type="radio" id="tri-grams" name="customRadio" class="custom-control-input" value="trigrams">
+                            <label class="custom-control-label" for="tri-grams">Top 50 Trigrams</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input v-model="data.source" type="radio" id="four-grams" name="customRadio" class="custom-control-input" value="quadgrams">
+                            <label class="custom-control-label" for="four-grams">Top 50 Quadgrams</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input v-model="data.source" type="radio" id="words_50" name="customRadio" class="custom-control-input" value="words_50">
+                            <label class="custom-control-label" for="words_50">Top 50 Words</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input v-model="data.source" type="radio" id="words_200" name="customRadio" class="custom-control-input" value="words_200">
+                            <label class="custom-control-label" for="words_200">Top 200 Words</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend class="combination">Generator</legend>
+                    <div class="form-group">
+                        <label class="col-form-label col-form-label-sm">Combination</label>
+                        <input v-model="data[data['source']].combination" v-on:keyup="refreshPhrases"
+                            class="form-control form-control-sm" type="text"
+                        >
+                        <label class="col-form-label col-form-label-sm">Repetition</label>
+                        <input v-model="data[data['source']].repetition" v-on:keyup="refreshPhrases"
+                            class="form-control form-control-sm" type="text"
+                        >
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend class="repetition">Threshold</legend>
+                    <div class="form-group">
+                        <label class="col-form-label col-form-label-sm">WPM</label>
+                        <input v-model="data[data['source']].minimumWPM" class="form-control form-control-sm" type="text">
+                        <label class="col-form-label col-form-label-sm">Accuracy</label>
+                        <input v-model="data[data['source']].minimumAccuracy" class="form-control form-control-sm" type="text">
+                    </div>
+                </fieldset>
+            </div>
+            
+            <div class="center">
+                <h4>Lesson {{ data[data['source']].phrasesCurrentIndex + 1 }} / {{ data[data['source']].phrases.length }}</h4>
+            </div>
+            <div class="expected-phrase word text-white bg-primary mb-3">
+                {{ expectedPhrase }}
+            </div>
+            <div class="form-group input-fields">
+                <label class="col-form-label col-form-label-lg"></label>
+                <input v-model="typedPhrase" :class="{'form-control': true, 'form-control-lg': true, 'incorrect-input': !isInputCorrect}" 
+                    type="text" placeholder="Re-type until passed, press <ESC> to reset" v-on:keyup="keyHandler"
+                >
+            </div>
+            <div class="form-group input-fields">
+                <label class="col-form-label col-form-label-lg"></label>
+                <input class="form-control form-control-lg" type="text" placeholder="Practice tricky parts slowly here">
+            </div>
+        </div>
+        <div class="center">
+            <h4>Raw WPM: {{ rawWPM }} </h4>  &nbsp; &nbsp; &nbsp; &nbsp; <h4>Accuracy: {{ accuracy }} % </h4>
+        </div>
+        <h3 class="center card-header">Ngram Type</h3>
+    </div>
+    <script type="text/javascript">
+        var ngramTypeConfig = {
+            el: '#app',
+            data: function() {
+                return {
+                    bigrams: bigrams,
+                    trigrams: trigrams,
+                    quadgrams: quadgrams,
+                    words_50: words_50,
+                    words_200: words_200,
+
+                    data: {
+                        source: 'bigrams',
+                        bigrams: {
+                            combination: 2,
+                            repetition: 3,
+                            minimumWPM: 40,
+                            minimumAccuracy: 100,
+                            phrases: {},
+                            phrasesCurrentIndex: 0,
+                        },
+                        trigrams: {
+                            combination: 2,
+                            repetition: 3,
+                            minimumWPM: 40,
+                            minimumAccuracy: 100,
+                            phrases: {},
+                            phrasesCurrentIndex: 0,
+                        },
+                        quadgrams: {
+                            combination: 2,
+                            repetition: 3,
+                            minimumWPM: 40,
+                            minimumAccuracy: 100,
+                            phrases: {},
+                            phrasesCurrentIndex: 0,
+                        },
+                        words_50: {
+                            combination: 2,
+                            repetition: 3,
+                            minimumWPM: 40,
+                            minimumAccuracy: 100,
+                            phrases: {},
+                            phrasesCurrentIndex: 0,
+                        },
+                        words_200: {
+                            combination: 2,
+                            repetition: 3,
+                            minimumWPM: 40,
+                            minimumAccuracy: 100,
+                            phrases: {},
+                            phrasesCurrentIndex: 0,
+                        },
+                    },
+
+                    phrases: [],
+                    expectedPhrase: '',
+                    typedPhrase: '',
+                    startTime: '',
+                    hitsCorrect: 0,
+                    hitsWrong: 0,
+                    isInputCorrect: true,
+                    rawWPM: 0,
+                    accuracy: 0,
+                }
+            },
+            mounted: function() {
+                if (localStorage.data != undefined) {
+                    this.load();
+                    var dataSource = this.getCurrentDataSource();
+                    this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex]; 
+                }
+
+                else {
+                    this.refreshPhrases(); 
+                }
+            },
+            watch: {
+                'data.source': function() {
+                    var dataSource = this.getCurrentDataSource();
+                    if ($.isEmptyObject(dataSource.phrases)) {
+                        this.refreshPhrases();
+                    }
+
+                    else {
+                        this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex];
+                    }
+
+                    this.resetCurrentPhraseMetrics();
+                },
+                typedPhrase: function() {
+                    // Make sure to reset any error color when moving to next lesson,
+                    // lesson being reset, all chars being deleted, etc. 
+                    if (!this.typedPhrase.length) {
+                        this.isInputCorrect = true;
+                    }
+
+                    if (this.typedPhrase.length == 1) {
+                        this.startTime = Math.floor(new Date().getTime() / 1000);
+                    }
+                }
+            },
+            methods: {
+                save: function() {
+                    localStorage.data = JSON.stringify(this.data);
+                },
+                load: function () {
+                    this.data = JSON.parse(localStorage.data);
+                },
+                deepCopy: function(arrayOrObject) {
+                    var emptyArrayOrObject = $.isArray(arrayOrObject) ? [] : {};
+                    return $.extend(true, emptyArrayOrObject, arrayOrObject);
+                },
+                shuffle: function(array) {
+                    for (var i = array.length - 1; i > 0; i--) {
+                        var j = Math.floor(Math.random() * (i + 1));
+                        [array[i], array[j]] = [array[j], array[i]];
+                    }
+                },
+                getCurrentDataSource: function() {
+                    return this.data[this.data['source']];
+                },
+                refreshPhrases: function() {
+                    var dataSource = this.getCurrentDataSource();
+                    dataSource.phrases = this.generatePhrases(dataSource.combination, dataSource.repetition);
+                    this.expectedPhrase = dataSource.phrases[0]; 
+                    this.save();
+                },
+                generatePhrases: function(numberOfItemsToCombine, repetitions) {
+                    var ngrams = this.deepCopy(this[this.data['source']]);
+                    this.shuffle(ngrams);
+                    var ngramsProcessed = 0;
+                    var phrases = [];
+
+                    while (ngrams.length) {
+                        var ngramsSublist = ngrams.slice(0, numberOfItemsToCombine);
+                        var subPhrase = ngramsSublist.join(' ');
+                        var _phrase = [];
+                        for (var i = 0; i < repetitions; i++) {
+                            _phrase.push(subPhrase);
+                        }
+                        phrases.push(_phrase.join(' '));
+                        // Remove the processed ngrams.
+                        ngrams.splice(0, numberOfItemsToCombine);
+                    }
+
+                    return phrases
+                },
+                keyHandler: function(e) {
+                    var key = e.key;
+
+                    if (key == 'Escape') {
+                        this.resetCurrentPhraseMetrics();
+                        return;
+                    }
+
+                    // For other miscellaneous keys.
+                    if (key.length > 1) {
+                        return;
+                    }
+
+                    var expectedKey = this.expectedPhrase[this.typedPhrase.length - 1];
+                    if (this.expectedPhrase.indexOf(this.typedPhrase) > -1) {
+                        this.isInputCorrect = true;
+                        this.hitsCorrect += 1;
+                        (new Audio('click.mp3')).play();
+                    }
+                    else {
+                        this.isInputCorrect = false;
+                        this.hitsWrong += 1;
+                        (new Audio('clack.mp3')).play();
+                    }
+
+                    if (
+                        this.typedPhrase.length === this.expectedPhrase.length 
+                        && this.typedPhrase === this.expectedPhrase
+                    ) {
+                        var currentTime = (Math.floor(new Date().getTime() / 1000));
+                        this.rawWPM = Math.floor(
+                            // 5 chars equals 1 word.
+                            ((this.hitsCorrect + this.hitsWrong) / 5) / (currentTime - this.startTime) * 60
+                        );
+                        this.accuracy = Math.floor(
+                            this.hitsCorrect / (this.hitsCorrect + this.hitsWrong) * 100
+                        );
+
+                        if (
+                            this.rawWPM < this.getCurrentDataSource().minimumWPM
+                            || this.accuracy < this.getCurrentDataSource().minimumAccuracy
+                        ) {
+                            this.resetCurrentPhraseMetrics();
+                            (new Audio('clack.wav')).play();
+                            return;
+                        }
+
+                        (new Audio('ding.wav')).play();
+                        this.nextPhrase();
+                    }
+                },
+                resetCurrentPhraseMetrics: function() {
+                    this.hitsCorrect = 0;
+                    this.hitsWrong = 0;
+                    this.typedPhrase = '';
+                },
+                nextPhrase: function() {
+                    this.resetCurrentPhraseMetrics();
+                    var dataSource = this.data[this.data['source']];
+                    var nextPhraseExists = (dataSource.phrases.length > dataSource.phrasesCurrentIndex + 1);
+                    if (nextPhraseExists) {
+                        dataSource.phrasesCurrentIndex += 1;
+                    }
+                    // Start again from beginning.
+                    else {
+                        dataSource.phrasesCurrentIndex = 0;
+                    }
+                    this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex];
+                    this.save();
+                },
+            },
+        };
+
+        var ngramTypeApp = new Vue(ngramTypeConfig);
+    </script>
+</body>
+</html>
