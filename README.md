@@ -3,7 +3,7 @@
 
 ## About
 
-I'm recently practicing **Touch Typing** and [**Colemak DH**](https://colemakmods.github.io/mod-dh/) keyboard layout to improve my typing speed/accuracy. Ngram refers to sequence/grouping of characters, and they're usually ranked to describe the common ones. Historially, ngrams are used in Crytography to decrypt messages. Nowadays, they have many applications, for classifying spam messages, as auto-completion or spell-checking tool, etc. Technically, ngrams are words also, and vice versa.
+I'm recently practicing **Touch Typing** and [**Colemak DH**](https://colemakmods.github.io/mod-dh/) keyboard layout to improve my typing speed/accuracy. Ngram refers to sequence/grouping of characters, and they're usually ranked to describe the common ones. Historically, ngrams are used in Crytography to decrypt messages. Nowadays, they have many applications, for classifying spam messages, as auto-completion or spell-checking tool, etc. Technically, ngrams are words also, and vice versa.
 
 In Josh Kaufman's [**The First 20 Hours**](https://first20hours.com/) book (one of his personal challenges is to learn Colemak in 20 hours in which he succeeded), he used ngrams mostly as well as practice dataset:
 
