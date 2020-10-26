@@ -22,3 +22,8 @@ This **Ngram Type** project name was inspired by [**Amphetype**](https://github.
 * Has color indicator if you typed a wrong key.
 * Timer will show once you start typing, for added tracking.
 * Settings are saved in your browser, and will be auto-loaded when you revisit the site.
+
+
+## Hosted Version
+You could access the online version using GitHub Pages:
+https://ranelpadon.github.io/ngram-type/
