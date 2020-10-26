@@ -113,7 +113,14 @@
             margin-top: -30px;
         }
 
-        .form-group input::-webkit-input-placeholder ,
+        .form-group input::-webkit-input-placeholder {
+            transform: scale(0.50);
+        }
+
+        .form-group input:-ms-input-placeholder {
+            font-size: 20px;
+        }
+
         .form-group input::-moz-placeholder {
             font-size: 20px;
         }
