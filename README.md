@@ -7,7 +7,7 @@ I'm recently practicing **Touch Typing** and [**Colemak DH**](https://colemakmod
 
 In Josh Kaufman's [**The First 20 Hours**](https://first20hours.com/) book (one of his personal challenges is to learn Colemak in 20 hours in which he succeeded), he used ngrams mostly as well as practice dataset:
 
-> Human languages, including English, follow a power law curve called Zipf’s law: a very small set of words makes up the vast majority of actual usage. Based on an analysis of The Brown Corpus (1964), a 1 million-word collection of 500 modern English documents, only 135 words account for 50 percent of all English usage.21 The word "the" itself accounts for 7.5 percent, while "of" accounts for 3.5 percent.
+> Human languages, including English, follow a power law curve called Zipf’s law: a very small set of words makes up the vast majority of actual usage. Based on an analysis of The Brown Corpus (1964), a 1 million-word collection of 500 modern English documents, only 135 words account for 50 percent of all English usage. The word "the" itself accounts for 7.5 percent, while "of" accounts for 3.5 percent.
 
 Hence, ngrams are practical and very useful training data. The better you're able to type these sequences of characters, the faster you'll be able to type in general. However, there's no free online typing website that integrates ngrams. And the typing tests on various websites are usually based on common English words. This project aims to provide a training ground for boosting typing speed/accuracy by focusing your performance in small and controlled phrases/chunks. Perfect training after all required perfect training on small set of data.
 
