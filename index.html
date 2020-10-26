@@ -15,14 +15,29 @@
     <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Ngrams Sources. -->
-    <script src="bigrams.js"></script>
-    <script src="trigrams.js"></script>
-    <script src="quadgrams.js"></script>
-    <script src="words-50.js"></script>
-    <script src="words-200.js"></script>
+    <script src="./ngrams/bigrams.js"></script>
+    <script src="./ngrams/trigrams.js"></script>
+    <script src="./ngrams/quadgrams.js"></script>
+    <script src="./ngrams/words-50.js"></script>
+    <script src="./ngrams/words-200.js"></script>
 
     <!-- VueJS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+    <!-- Timer -->
+    <script src="./assets/js/moment.min.js"></script>
+    <script src="./assets/js/ez.countimer.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#input-typing').one('keyup', function() {
+                $('.timer').countimer({
+                    autoStart : true
+                });
+            });
+        });
+    </script>
+
     <style>
         body {
             margin: 20px;
@@ -67,6 +82,10 @@
             padding: 10px;
         }
 
+        .stats {
+            margin-top: -15px;
+        }
+
         fieldset {
             margin: -20px 30px 20px;
         }
@@ -82,6 +101,10 @@
             padding-top: 20px;
         }
 
+        .input-practice-typing {
+            margin-top: -30px;
+        }
+
         .form-group input::-webkit-input-placeholder ,
         .form-group input::-moz-placeholder {
             font-size: 20px;
@@ -89,6 +112,11 @@
 
         .form-control.incorrect-input {
             background-color: #E7BBDC;
+        }
+
+        #timer-wrapper {
+            height: 40px;
+            margin-top: -20px;
         }
     </style>
 </head>
@@ -154,16 +182,21 @@
             <div class="form-group input-fields">
                 <label class="col-form-label col-form-label-lg"></label>
                 <input v-model="typedPhrase" :class="{'form-control': true, 'form-control-lg': true, 'incorrect-input': !isInputCorrect}" 
-                    type="text" placeholder="Re-type until passed, press <ESC> to reset" v-on:keyup="keyHandler"
+                    id="input-typing" type="text" placeholder="Re-type until passed, press <ESC> to reset" v-on:keyup="keyHandler"
                 >
             </div>
-            <div class="form-group input-fields">
+            <div class="input-practice-typing form-group input-fields">
                 <label class="col-form-label col-form-label-lg"></label>
                 <input class="form-control form-control-lg" type="text" placeholder="Practice tricky parts slowly here">
             </div>
         </div>
-        <div class="center">
+        <div class="center stats">
             <h4>Raw WPM: {{ rawWPM }} </h4>  &nbsp; &nbsp; &nbsp; &nbsp; <h4>Accuracy: {{ accuracy }} % </h4>
+        </div>
+
+        <div id="timer-wrapper" class="center">
+            <div class="timer well">
+            </div>
         </div>
         <h3 class="center card-header">Ngram Type</h3>
     </div>
@@ -332,12 +365,12 @@
                     if (this.expectedPhrase.indexOf(this.typedPhrase) > -1) {
                         this.isInputCorrect = true;
                         this.hitsCorrect += 1;
-                        (new Audio('click.mp3')).play();
+                        (new Audio('./media/click.mp3')).play();
                     }
                     else {
                         this.isInputCorrect = false;
                         this.hitsWrong += 1;
-                        (new Audio('clack.mp3')).play();
+                        (new Audio('./media/clack.mp3')).play();
                     }
 
                     if (
@@ -358,11 +391,11 @@
                             || this.accuracy < this.getCurrentDataSource().minimumAccuracy
                         ) {
                             this.resetCurrentPhraseMetrics();
-                            (new Audio('clack.wav')).play();
+                            (new Audio('./media/clack.wav')).play();
                             return;
                         }
 
-                        (new Audio('ding.wav')).play();
+                        (new Audio('./media/ding.wav')).play();
                         this.nextPhrase();
                     }
                 },
