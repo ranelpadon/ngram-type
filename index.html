@@ -279,7 +279,7 @@
                 }
             },
             mounted: function() {
-                if (localStorage.data != undefined) {
+                if (localStorage.ngramTypeAppdata != undefined) {
                     this.load();
                     var dataSource = this.getCurrentDataSource();
                     this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex]; 
@@ -316,10 +316,10 @@
             },
             methods: {
                 save: function() {
-                    localStorage.data = JSON.stringify(this.data);
+                    localStorage.ngramTypeAppdata = JSON.stringify(this.data);
                 },
                 load: function () {
-                    this.data = JSON.parse(localStorage.data);
+                    this.data = JSON.parse(localStorage.ngramTypeAppdata);
                 },
                 deepCopy: function(arrayOrObject) {
                     var emptyArrayOrObject = $.isArray(arrayOrObject) ? [] : {};
