@@ -20,7 +20,7 @@ This **Ngram Type** project name was inspired by [**Amphetype**](https://github.
 * The minimum WMP/Accuracy required could be adjusted depending on your skill level.
 * Has sound effects: correct key, wrong key, or failed the minimum WMP/Accuracy set.
 * Has color indicator if you typed a wrong key.
-* Timer will show once you start typing, for added tracking.
+* Timer will show once you start typing, for added tracking. There's no time limit though, you practice at your own pace.
 * Settings are saved in your browser, and will be auto-loaded when you revisit the site.
 
 
