@@ -391,7 +391,7 @@
                     }
 
                     var typedPhrase = this.typedPhrase.trimStart();
-                    if (typedPhrase.length == 1) {
+                    if (!typedPhrase.length) {
                         return;
                     }
                     var expectedKey = this.expectedPhrase[typedPhrase.length - 1];
