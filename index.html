@@ -296,6 +296,15 @@
                 else {
                     this.refreshPhrases(); 
                 }
+
+                // Use jQuery instead of Vue for intercepting the <TAB> key.
+                var that = this;
+                $('#input-typing').on('keydown', function(e) {
+                    if (e.originalEvent.code == 'Tab') {
+                        e.preventDefault();
+                        that.resetCurrentPhraseMetrics();
+                    }
+                });
             },
             watch: {
                 'data.source': function() {
@@ -371,7 +380,7 @@
                 keyHandler: function(e) {
                     var key = e.key;
 
-                    if (key == 'Escape' || key == 'Tab') {
+                    if (key == 'Escape') {
                         this.resetCurrentPhraseMetrics();
                         return;
                     }
