@@ -198,7 +198,7 @@
             <div class="form-group input-fields">
                 <label class="col-form-label col-form-label-lg"></label>
                 <input v-model="typedPhrase" :class="{'form-control': true, 'form-control-lg': true, 'incorrect-input': !isInputCorrect}" 
-                    id="input-typing" type="text" placeholder="Re-type until passed, press <ESC> to reset" v-on:keyup="keyHandler"
+                    id="input-typing" type="text" placeholder="Re-type until passed, press <TAB> or <ESC> to reset" v-on:keyup="keyHandler"
                 >
             </div>
             <div class="input-practice-typing form-group input-fields">
@@ -314,7 +314,7 @@
                     // Make sure to reset any error color when moving to next lesson,
                     // lesson being reset, all chars being deleted, etc. 
                     if (!this.typedPhrase.length) {
-                        this.isInputCorrect = true;
+                        this.resetCurrentPhraseMetrics();
                     }
 
                     if (this.typedPhrase.length == 1) {
@@ -371,7 +371,7 @@
                 keyHandler: function(e) {
                     var key = e.key;
 
-                    if (key == 'Escape') {
+                    if (key == 'Escape' || key == 'Tab') {
                         this.resetCurrentPhraseMetrics();
                         return;
                     }
@@ -427,6 +427,7 @@
                     this.hitsCorrect = 0;
                     this.hitsWrong = 0;
                     this.typedPhrase = '';
+                    this.isInputCorrect = true;
                 },
                 nextPhrase: function() {
                     this.resetCurrentPhraseMetrics();
