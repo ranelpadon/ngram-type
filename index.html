@@ -169,11 +169,11 @@
                     <legend class="combination">Generator</legend>
                     <div class="form-group">
                         <label class="col-form-label col-form-label-sm">Combination</label>
-                        <input v-model.number="data[data['source']].combination" v-on:keyup="refreshPhrases"
+                        <input v-model.number="data[data['source']].combination" v-on:change="data[data['source']].combination && refreshPhrases"
                             class="form-control form-control-sm" type="number"
                         >
                         <label class="col-form-label col-form-label-sm">Repetition</label>
-                        <input v-model.number="data[data['source']].repetition" v-on:keyup="refreshPhrases"
+                        <input v-model.number="data[data['source']].repetition" v-on:change="data[data['source']].repetition && refreshPhrases"
                             class="form-control form-control-sm" type="number"
                         >
                     </div>
