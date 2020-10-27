@@ -169,12 +169,12 @@
                     <legend class="combination">Generator</legend>
                     <div class="form-group">
                         <label class="col-form-label col-form-label-sm">Combination</label>
-                        <input v-model="data[data['source']].combination" v-on:keyup="refreshPhrases"
-                            class="form-control form-control-sm" type="text"
+                        <input v-model.number="data[data['source']].combination" v-on:keyup="refreshPhrases"
+                            class="form-control form-control-sm" type="number"
                         >
                         <label class="col-form-label col-form-label-sm">Repetition</label>
-                        <input v-model="data[data['source']].repetition" v-on:keyup="refreshPhrases"
-                            class="form-control form-control-sm" type="text"
+                        <input v-model.number="data[data['source']].repetition" v-on:keyup="refreshPhrases"
+                            class="form-control form-control-sm" type="number"
                         >
                     </div>
                 </fieldset>
@@ -182,9 +182,9 @@
                     <legend class="repetition">Threshold</legend>
                     <div class="form-group">
                         <label class="col-form-label col-form-label-sm">WPM</label>
-                        <input v-model="data[data['source']].minimumWPM" class="form-control form-control-sm" type="text">
+                        <input v-model.number="data[data['source']].minimumWPM" class="form-control form-control-sm" type="number">
                         <label class="col-form-label col-form-label-sm">Accuracy</label>
-                        <input v-model="data[data['source']].minimumAccuracy" class="form-control form-control-sm" type="text">
+                        <input v-model.number="data[data['source']].minimumAccuracy" class="form-control form-control-sm" type="number">
                     </div>
                 </fieldset>
             </div>
@@ -381,8 +381,12 @@
                         return;
                     }
 
-                    var expectedKey = this.expectedPhrase[this.typedPhrase.length - 1];
-                    if (this.expectedPhrase.indexOf(this.typedPhrase) > -1) {
+                    var typedPhrase = this.typedPhrase.trimStart();
+                    if (typedPhrase.length == 1) {
+                        return;
+                    }
+                    var expectedKey = this.expectedPhrase[typedPhrase.length - 1];
+                    if (this.expectedPhrase.indexOf(typedPhrase) > -1) {
                         this.isInputCorrect = true;
                         this.hitsCorrect += 1;
                         (new Audio('./media/click.mp3')).play();
@@ -394,8 +398,8 @@
                     }
 
                     if (
-                        this.typedPhrase.length === this.expectedPhrase.length 
-                        && this.typedPhrase === this.expectedPhrase
+                        typedPhrase.length === this.expectedPhrase.length
+                        && typedPhrase === this.expectedPhrase
                     ) {
                         var currentTime = (Math.floor(new Date().getTime() / 1000));
                         this.rawWPM = Math.floor(
