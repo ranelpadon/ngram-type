@@ -182,9 +182,13 @@
                     <legend class="repetition">Threshold</legend>
                     <div class="form-group">
                         <label class="col-form-label col-form-label-sm">WPM</label>
-                        <input v-model.number="data[data['source']].minimumWPM" class="form-control form-control-sm" type="number">
+                        <input v-model.number="data[data['source']].minimumWPM" v-on:change="save"
+                            class="form-control form-control-sm" type="number"
+                        >
                         <label class="col-form-label col-form-label-sm">Accuracy</label>
-                        <input v-model.number="data[data['source']].minimumAccuracy" class="form-control form-control-sm" type="number">
+                        <input v-model.number="data[data['source']].minimumAccuracy"
+                            class="form-control form-control-sm" type="number" v-on:change="save"
+                        >
                     </div>
                 </fieldset>
             </div>
