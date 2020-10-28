@@ -315,6 +315,8 @@
 
                     else {
                         this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex];
+                        // Save state in case of page reload.
+                        this.save();
                     }
 
                     this.resetCurrentPhraseMetrics();
