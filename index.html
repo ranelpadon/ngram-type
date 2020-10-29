@@ -309,6 +309,11 @@
                         that.resetCurrentPhraseMetrics();
                     }
                 });
+
+                this.correctLetterSound = new Audio('./media/click.mp3');
+                this.incorrectLetterSound = new Audio('./media/clack.mp3');
+                this.incorrectPhraseSound = new Audio('./media/clack.wav');
+                this.correctPhraseSound = new Audio('./media/ding.wav');
             },
             watch: {
                 'data.source': function() {
@@ -403,12 +408,12 @@
                     }
                     var expectedKey = this.expectedPhrase[typedPhrase.length - 1];
                     if (this.expectedPhrase.startsWith(typedPhrase)) {
-                        (new Audio('./media/click.mp3')).play();
+                        this.correctLetterSound.play();
                         this.isInputCorrect = true;
                         this.hitsCorrect += 1;
                     }
                     else {
-                        (new Audio('./media/clack.mp3')).play();
+                        this.incorrectLetterSound.play();
                         this.isInputCorrect = false;
                         this.hitsWrong += 1;
                     }
@@ -430,12 +435,12 @@
                             this.rawWPM < this.getCurrentDataSource().minimumWPM
                             || this.accuracy < this.getCurrentDataSource().minimumAccuracy
                         ) {
-                            (new Audio('./media/clack.wav')).play();
+                            this.incorrectPhraseSound.play();
                             this.resetCurrentPhraseMetrics();
                             return;
                         }
 
-                        (new Audio('./media/ding.wav')).play();
+                        this.correctPhraseSound.play();
                         this.nextPhrase();
                     }
                 },
