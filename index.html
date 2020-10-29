@@ -451,13 +451,13 @@
                     var nextPhraseExists = (dataSource.phrases.length > dataSource.phrasesCurrentIndex + 1);
                     if (nextPhraseExists) {
                         dataSource.phrasesCurrentIndex += 1;
+                        this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex];
+                        this.save();
                     }
-                    // Start again from beginning.
+                    // Start again from beginning, but generate new data.
                     else {
-                        dataSource.phrasesCurrentIndex = 0;
+                        this.refreshPhrases();
                     }
-                    this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex];
-                    this.save();
                 },
             },
         };
