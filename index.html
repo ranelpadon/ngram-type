@@ -363,6 +363,24 @@
                 getCurrentDataSource: function() {
                     return this.data[this.data['source']];
                 },
+                stopCurrentPlayingSound: function() {
+                    // Sounds at the end of each phrase/lesson
+                    // dont need to be played from the beginning.
+                    if (
+                        this.currentPlayingSound == this.correctPhraseSound
+                        || this.currentPlayingSound == this.incorrectPhraseSound
+                    ) {
+                        return;
+                    }
+
+                    // Reset any playing sound to handle fast typing,
+                    // Otherwise, the sound will be intermittent and
+                    // not in sync with the key presses.
+                    if (this.currentPlayingSound) {
+                        this.currentPlayingSound.currentTime = 0;
+                    }
+
+                },
                 refreshPhrases: function() {
                     var dataSource = this.getCurrentDataSource();
                     dataSource.phrases = this.generatePhrases(dataSource.combination, dataSource.repetition);
@@ -407,22 +425,16 @@
                     if (!typedPhrase.length) {
                         return;
                     }
-                    var expectedKey = this.expectedPhrase[typedPhrase.length - 1];
-
-                    // Reset any playing sound to handle fast typing,
-                    // Otherwise, the sound will be intermittent and
-                    // not in sync with the key presses.
-                    if (this.currentPlayingSound) {
-                        this.currentPlayingSound.currentTime = 0;
-                    }
 
                     if (this.expectedPhrase.startsWith(typedPhrase)) {
+                        this.stopCurrentPlayingSound();
                         this.correctLetterSound.play();
                         this.currentPlayingSound = this.correctLetterSound;
                         this.isInputCorrect = true;
                         this.hitsCorrect += 1;
                     }
                     else {
+                        this.stopCurrentPlayingSound();
                         this.incorrectLetterSound.play();
                         this.currentPlayingSound = this.incorrectLetterSound;
                         this.isInputCorrect = false;
@@ -446,12 +458,14 @@
                             this.rawWPM < this.getCurrentDataSource().minimumWPM
                             || this.accuracy < this.getCurrentDataSource().minimumAccuracy
                         ) {
+                            this.stopCurrentPlayingSound();
                             this.incorrectPhraseSound.play();
                             this.currentPlayingSound = this.incorrectPhraseSound;
                             this.resetCurrentPhraseMetrics();
                             return;
                         }
 
+                        this.stopCurrentPlayingSound();
                         this.correctPhraseSound.play();
                         this.currentPlayingSound = this.correctPhraseSound;
                         this.nextPhrase();
