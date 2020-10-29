@@ -314,6 +314,7 @@
                 this.incorrectLetterSound = new Audio('./media/clack.mp3');
                 this.incorrectPhraseSound = new Audio('./media/clack.wav');
                 this.correctPhraseSound = new Audio('./media/ding.wav');
+                this.currentPlayingSound = null;
             },
             watch: {
                 'data.source': function() {
@@ -407,13 +408,23 @@
                         return;
                     }
                     var expectedKey = this.expectedPhrase[typedPhrase.length - 1];
+
+                    // Reset any playing sound to handle fast typing,
+                    // Otherwise, the sound will be intermittent and
+                    // not in sync with the key presses.
+                    if (this.currentPlayingSound) {
+                        this.currentPlayingSound.currentTime = 0;
+                    }
+
                     if (this.expectedPhrase.startsWith(typedPhrase)) {
                         this.correctLetterSound.play();
+                        this.currentPlayingSound = this.correctLetterSound;
                         this.isInputCorrect = true;
                         this.hitsCorrect += 1;
                     }
                     else {
                         this.incorrectLetterSound.play();
+                        this.currentPlayingSound = this.incorrectLetterSound;
                         this.isInputCorrect = false;
                         this.hitsWrong += 1;
                     }
@@ -436,11 +447,13 @@
                             || this.accuracy < this.getCurrentDataSource().minimumAccuracy
                         ) {
                             this.incorrectPhraseSound.play();
+                            this.currentPlayingSound = this.incorrectPhraseSound;
                             this.resetCurrentPhraseMetrics();
                             return;
                         }
 
                         this.correctPhraseSound.play();
+                        this.currentPlayingSound = this.correctPhraseSound;
                         this.nextPhrase();
                     }
                 },
