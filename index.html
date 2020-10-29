@@ -402,7 +402,7 @@
                         return;
                     }
                     var expectedKey = this.expectedPhrase[typedPhrase.length - 1];
-                    if (this.expectedPhrase.indexOf(typedPhrase) > -1) {
+                    if (this.expectedPhrase.startsWith(typedPhrase)) {
                         (new Audio('./media/click.mp3')).play();
                         this.isInputCorrect = true;
                         this.hitsCorrect += 1;
