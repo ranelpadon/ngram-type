@@ -361,6 +361,7 @@
                     var dataSource = this.getCurrentDataSource();
                     dataSource.phrases = this.generatePhrases(dataSource.combination, dataSource.repetition);
                     this.expectedPhrase = dataSource.phrases[0]; 
+                    dataSource.phrasesCurrentIndex = 0;
                     this.save();
                 },
                 generatePhrases: function(numberOfItemsToCombine, repetitions) {
