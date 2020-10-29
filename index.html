@@ -402,14 +402,14 @@
                     }
                     var expectedKey = this.expectedPhrase[typedPhrase.length - 1];
                     if (this.expectedPhrase.indexOf(typedPhrase) > -1) {
+                        (new Audio('./media/click.mp3')).play();
                         this.isInputCorrect = true;
                         this.hitsCorrect += 1;
-                        (new Audio('./media/click.mp3')).play();
                     }
                     else {
+                        (new Audio('./media/clack.mp3')).play();
                         this.isInputCorrect = false;
                         this.hitsWrong += 1;
-                        (new Audio('./media/clack.mp3')).play();
                     }
 
                     if (
@@ -429,8 +429,8 @@
                             this.rawWPM < this.getCurrentDataSource().minimumWPM
                             || this.accuracy < this.getCurrentDataSource().minimumAccuracy
                         ) {
-                            this.resetCurrentPhraseMetrics();
                             (new Audio('./media/clack.wav')).play();
+                            this.resetCurrentPhraseMetrics();
                             return;
                         }
 
