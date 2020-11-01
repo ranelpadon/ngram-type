@@ -17,7 +17,7 @@ This **Ngram Type** project name was inspired by [**Amphetype**](https://github.
 ## Features
 * Data source could be chosen, based on the most common ngrams/words. Source settings' are independent with each other: lesson generator and minimum performance settings are set for each data source.
 * Lessons could be customized and generated on-the-fly by varying the `Combination` and `Repetition` settings; you'll immediately see the effect on the generated lesson. Old lessons on the same data source selected will be overridden once you updata these settings. Once you completed the lessons, the data will start again at the beginning, but will be re-shuffled.
-* The minimum WPM/Accuracy required could be adjusted depending on your skill level, could be updated even at the mid-part of the lessons. You could not proceed to next lesson unless you have met those minimum performance.
+* The minimum WPM/Accuracy required could be adjusted depending on your skill level, could be updated even at the mid-part of the lessons. You could not proceed to next lesson unless you have met those minimum performance. Average WPM refers to the Average WPM of the current lesson which will be reset every start/restart of the same lesson, so that old/historical averages will not affect the new ones.
 * Has sound effects: correct key, wrong key, or failed the minimum WPM/Accuracy set.
 * Has color indicator if you typed a wrong key.
 * Timer will show once you start typing, for added tracking. There's no time limit though, you practice at your own pace.
