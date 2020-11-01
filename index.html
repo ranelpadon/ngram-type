@@ -481,19 +481,11 @@
                             ((this.hitsCorrect + this.hitsWrong) / 5) / (currentTime - this.startTime) * 60
                         );
 
-                        // For back-compatibility,
-                        // or when starting a new round in the same lesson.
-                        var dataSource = this.dataSource;
-                        var newRoundStarted = (dataSource.phrasesCurrentIndex == 0);
-                        if (!dataSource.WPMs || newRoundStarted) {
-                            dataSource.WPMs = [];
-                        }
-                        dataSource.WPMs.push(this.rawWPM);
-
                         this.accuracy = Math.floor(
                             this.hitsCorrect / (this.hitsCorrect + this.hitsWrong) * 100
                         );
 
+                        var dataSource = this.dataSource;
                         if (
                             this.rawWPM < dataSource.minimumWPM
                             || this.accuracy < dataSource.minimumAccuracy
@@ -504,6 +496,14 @@
                             this.resetCurrentPhraseMetrics();
                             return;
                         }
+
+                        // For back-compatibility,
+                        // or when starting a new round in the same lesson.
+                        var newRoundStarted = (dataSource.phrasesCurrentIndex == 0);
+                        if (!dataSource.WPMs || newRoundStarted) {
+                            dataSource.WPMs = [];
+                        }
+                        dataSource.WPMs.push(this.rawWPM);
 
                         this.stopCurrentPlayingSound();
                         this.correctPhraseSound.play();
