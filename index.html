@@ -213,7 +213,7 @@
         <div class="center stats">
             <h4>Raw WPM: {{ rawWPM }} </h4>
             &nbsp; &nbsp; &nbsp; &nbsp; <h4>Accuracy: {{ accuracy }} % </h4>
-            &nbsp; &nbsp; &nbsp; &nbsp; <h4>Average WPM: {{ averageWPM }} % </h4>
+            &nbsp; &nbsp; &nbsp; &nbsp; <h4>Average WPM: {{ averageWPM }} </h4>
         </div>
 
         <div id="timer-wrapper" class="center">
@@ -310,7 +310,7 @@
                     return dataSource.WPMs;
                 },
                 averageWPM: function() {
-                    var dataSource =this.dataSource;
+                    var dataSource = this.dataSource;
                     if ($.isEmptyObject(dataSource.WPMs)) {
                         return 0;
                     }
