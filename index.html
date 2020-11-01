@@ -211,7 +211,9 @@
             </div>
         </div>
         <div class="center stats">
-            <h4>Raw WPM: {{ rawWPM }} </h4>  &nbsp; &nbsp; &nbsp; &nbsp; <h4>Accuracy: {{ accuracy }} % </h4>
+            <h4>Raw WPM: {{ rawWPM }} </h4>
+            &nbsp; &nbsp; &nbsp; &nbsp; <h4>Accuracy: {{ accuracy }} % </h4>
+            &nbsp; &nbsp; &nbsp; &nbsp; <h4>Average WPM: {{ averageWPM }} % </h4>
         </div>
 
         <div id="timer-wrapper" class="center">
@@ -242,6 +244,7 @@
                             repetition: 3,
                             minimumWPM: 40,
                             minimumAccuracy: 100,
+                            WPMs: [],
                             phrases: {},
                             phrasesCurrentIndex: 0,
                         },
@@ -250,6 +253,7 @@
                             repetition: 3,
                             minimumWPM: 40,
                             minimumAccuracy: 100,
+                            WPMs: [],
                             phrases: {},
                             phrasesCurrentIndex: 0,
                         },
@@ -258,6 +262,7 @@
                             repetition: 3,
                             minimumWPM: 40,
                             minimumAccuracy: 100,
+                            WPMs: [],
                             phrases: {},
                             phrasesCurrentIndex: 0,
                         },
@@ -266,6 +271,7 @@
                             repetition: 3,
                             minimumWPM: 40,
                             minimumAccuracy: 100,
+                            WPMs: [],
                             phrases: {},
                             phrasesCurrentIndex: 0,
                         },
@@ -274,6 +280,7 @@
                             repetition: 3,
                             minimumWPM: 40,
                             minimumAccuracy: 100,
+                            WPMs: [],
                             phrases: {},
                             phrasesCurrentIndex: 0,
                         },
@@ -290,10 +297,33 @@
                     accuracy: 0,
                 }
             },
+            computed: {
+                dataSource: function() {
+                    return this.data[this.data['source']];
+                },
+                WPMs: function() {
+                    var dataSource = this.dataSource;
+                    // For back-compatibility.
+                    if (!dataSource.WPMs) {
+                        dataSource.WPMs = [];
+                    }
+                    return dataSource.WPMs;
+                },
+                averageWPM: function() {
+                    var dataSource =this.dataSource;
+                    if ($.isEmptyObject(dataSource.WPMs)) {
+                        return 0;
+                    }
+
+                    var sum = dataSource.WPMs.reduce(function(a, b) { return (a + b) }, 0);
+                    var average = sum / dataSource.WPMs.length;
+                    return Math.floor(average);
+                },
+            },
             mounted: function() {
                 if (localStorage.ngramTypeAppdata != undefined) {
                     this.load();
-                    var dataSource = this.getCurrentDataSource();
+                    var dataSource = this.dataSource;
                     this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex]; 
                 }
 
@@ -318,7 +348,7 @@
             },
             watch: {
                 'data.source': function() {
-                    var dataSource = this.getCurrentDataSource();
+                    var dataSource = this.dataSource;
                     if ($.isEmptyObject(dataSource.phrases)) {
                         this.refreshPhrases();
                     }
@@ -341,7 +371,10 @@
                     if (this.typedPhrase.length == 1) {
                         this.startTime = Math.floor(new Date().getTime() / 1000);
                     }
-                }
+                },
+                WPMs: function() {
+                    return this.averageWPM;
+                },
             },
             methods: {
                 save: function() {
@@ -359,9 +392,6 @@
                         var j = Math.floor(Math.random() * (i + 1));
                         [array[i], array[j]] = [array[j], array[i]];
                     }
-                },
-                getCurrentDataSource: function() {
-                    return this.data[this.data['source']];
                 },
                 stopCurrentPlayingSound: function() {
                     // Sounds at the end of each phrase/lesson
@@ -382,7 +412,7 @@
 
                 },
                 refreshPhrases: function() {
-                    var dataSource = this.getCurrentDataSource();
+                    var dataSource = this.dataSource;
                     dataSource.phrases = this.generatePhrases(dataSource.combination, dataSource.repetition);
                     this.expectedPhrase = dataSource.phrases[0]; 
                     dataSource.phrasesCurrentIndex = 0;
@@ -450,13 +480,23 @@
                             // 5 chars equals 1 word.
                             ((this.hitsCorrect + this.hitsWrong) / 5) / (currentTime - this.startTime) * 60
                         );
+
+                        // For back-compatibility,
+                        // or when starting a new round in the same lesson.
+                        var dataSource = this.dataSource;
+                        var newRoundStarted = (dataSource.phrasesCurrentIndex == 0);
+                        if (!dataSource.WPMs || newRoundStarted) {
+                            dataSource.WPMs = [];
+                        }
+                        dataSource.WPMs.push(this.rawWPM);
+
                         this.accuracy = Math.floor(
                             this.hitsCorrect / (this.hitsCorrect + this.hitsWrong) * 100
                         );
 
                         if (
-                            this.rawWPM < this.getCurrentDataSource().minimumWPM
-                            || this.accuracy < this.getCurrentDataSource().minimumAccuracy
+                            this.rawWPM < dataSource.minimumWPM
+                            || this.accuracy < dataSource.minimumAccuracy
                         ) {
                             this.stopCurrentPlayingSound();
                             this.incorrectPhraseSound.play();
@@ -479,7 +519,7 @@
                 },
                 nextPhrase: function() {
                     this.resetCurrentPhraseMetrics();
-                    var dataSource = this.data[this.data['source']];
+                    var dataSource = this.dataSource;
                     var nextPhraseExists = (dataSource.phrases.length > dataSource.phrasesCurrentIndex + 1);
                     if (nextPhraseExists) {
                         dataSource.phrasesCurrentIndex += 1;
