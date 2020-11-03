@@ -16,8 +16,8 @@ This **Ngram Type** project name was inspired by [**Amphetype**](https://github.
 
 ## Features
 * Data source could be chosen, based on the most common ngrams/words. Source settings' are independent with each other: lesson generator and minimum performance settings are set for each data source.
-* Lessons could be customized and generated on-the-fly by varying the `Combination` and `Repetition` settings; you'll immediately see the effect on the generated lesson. Old lessons on the same data source selected will be overridden once you updata these settings. Once you completed the lessons, the data will start again at the beginning, but will be re-shuffled.
-* The minimum WPM/Accuracy required could be adjusted depending on your skill level, could be updated even at the mid-part of the lessons. You could not proceed to next lesson unless you have met those minimum performance. Average WPM refers to the average of all the WPMs in the current lesson that passed the threshold which will be reset every start/restart of the same lesson, so that old/historical averages will not affect the new ones.
+* Lessons could be customized and generated on-the-fly by varying the `Combination` and `Repetition` settings; you'll immediately see the effect on the generated lesson. Old lessons on the same data source selected will be overridden once you update these settings. Once you completed the lessons, the data will start again at the beginning, but will be re-shuffled.
+* The minimum WPM/Accuracy required could be adjusted depending on your skill level, could be updated even at the mid-part of the lessons. You could not proceed to next lesson unless you have met those minimum performance. Average WPM refers to the average of all the WPMs in the current round of lessons that passed the threshold, which will be reset every round of lesson, so that old/historical averages will not affect the new ones. Average WPM is then a good indicator of your current speed which could be used for adjusting the performance thresholds in the next round of lessons.
 * Has sound effects: correct key, wrong key, or failed the minimum WPM/Accuracy set.
 * Has color indicator if you typed a wrong key.
 * Timer will show once you start typing, for added tracking. There's no time limit though, you practice at your own pace.
@@ -25,19 +25,22 @@ This **Ngram Type** project name was inspired by [**Amphetype**](https://github.
 
 ## Sample Lessons
 Using the **Top 50 Words** as sample source, you could have sample lessons/patterns like this:
-- *Setting*: Combination=1, Repetition=3
-    *Output*: `the the the`
+- Setting: `Combination=1`, `Repetition=3`
+    - Output: **the the the**
 
-- *Setting*: Combination=2, Repetition=3
-    *Output*: `the and the and the and`
+- Setting: `Combination=2`, `Repetition=3`
+    - Output: **the and the and the and**
 
-- *Setting*: Combination=3, Repetition=3
-    *Output*: `the and of the and of the and of`
+- Setting: `Combination=3`, `Repetition=3`
+    - Output: **the and of the and of the and of**
 
-- *Setting*: Combination=3, Repetition=1
-    *Output*: `the and of`
+- Setting: `Combination=3`, `Repetition=1`
+    - Output: **the and of**
+
+- Setting: `Combination=3`, `Repetition=2`
+    - Output: **the and of the and of**
 
 
 ## Hosted Version
 You could access the online version using GitHub Pages:
-https://ranelpadon.github.io/ngram-type/
+- https://ranelpadon.github.io/ngram-type/
