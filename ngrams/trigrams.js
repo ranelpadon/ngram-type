@@ -1,4 +1,3 @@
-
 const trigrams = [
     'the',
     'and',

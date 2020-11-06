@@ -18,6 +18,7 @@
     <script src="./ngrams/bigrams.js"></script>
     <script src="./ngrams/trigrams.js"></script>
     <script src="./ngrams/quadgrams.js"></script>
+    <script src="./ngrams/quintgrams.js"></script>
     <script src="./ngrams/words-50.js"></script>
     <script src="./ngrams/words-200.js"></script>
 
@@ -156,6 +157,10 @@
                             <label class="custom-control-label" for="four-grams">Top 50 Quadgrams</label>
                         </div>
                         <div class="custom-control custom-radio">
+                            <input v-model="data.source" type="radio" id="five-grams" name="customRadio" class="custom-control-input" value="quintgrams">
+                            <label class="custom-control-label" for="five-grams">Top 50 Quintgrams</label>
+                        </div>
+                        <div class="custom-control custom-radio">
                             <input v-model="data.source" type="radio" id="words_50" name="customRadio" class="custom-control-input" value="words_50">
                             <label class="custom-control-label" for="words_50">Top 50 Words</label>
                         </div>
@@ -234,6 +239,7 @@
                     bigrams: bigrams,
                     trigrams: trigrams,
                     quadgrams: quadgrams,
+                    quintgrams: quintgrams,
                     words_50: words_50,
                     words_200: words_200,
 
@@ -258,6 +264,15 @@
                             phrasesCurrentIndex: 0,
                         },
                         quadgrams: {
+                            combination: 2,
+                            repetition: 3,
+                            minimumWPM: 40,
+                            minimumAccuracy: 100,
+                            WPMs: [],
+                            phrases: {},
+                            phrasesCurrentIndex: 0,
+                        },
+                        quintgrams: {
                             combination: 2,
                             repetition: 3,
                             minimumWPM: 40,
@@ -324,7 +339,21 @@
                 if (localStorage.ngramTypeAppdata != undefined) {
                     this.load();
                     var dataSource = this.dataSource;
-                    this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex]; 
+                    this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex];
+
+                    // Back-compatibility for those existing users
+                    // to avoid issues with the newly added Quintgrams (5-grams):
+                    if (!this.data.quintgrams) {
+                        this.data.quintgrams = {
+                            combination: 2,
+                            repetition: 3,
+                            minimumWPM: 40,
+                            minimumAccuracy: 100,
+                            WPMs: [],
+                            phrases: {},
+                            phrasesCurrentIndex: 0,
+                        };
+                    }
                 }
 
                 else {

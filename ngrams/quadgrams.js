@@ -1,4 +1,3 @@
-
 const quadgrams = [
     'tion',
     'atio',
