@@ -17,8 +17,8 @@
     <!-- Ngrams Sources. -->
     <script src="./ngrams/bigrams.js"></script>
     <script src="./ngrams/trigrams.js"></script>
-    <script src="./ngrams/quadgrams.js"></script>
-    <script src="./ngrams/quintgrams.js"></script>
+    <script src="./ngrams/tetragrams.js"></script>
+    <script src="./ngrams/pentagrams.js"></script>
     <script src="./ngrams/words-50.js"></script>
     <script src="./ngrams/words-200.js"></script>
 
@@ -153,12 +153,12 @@
                             <label class="custom-control-label" for="tri-grams">Top 50 Trigrams</label>
                         </div>
                         <div class="custom-control custom-radio">
-                            <input v-model="data.source" type="radio" id="four-grams" name="customRadio" class="custom-control-input" value="quadgrams">
-                            <label class="custom-control-label" for="four-grams">Top 50 Quadgrams</label>
+                            <input v-model="data.source" type="radio" id="four-grams" name="customRadio" class="custom-control-input" value="tetragrams">
+                            <label class="custom-control-label" for="four-grams">Top 50 Tetragrams</label>
                         </div>
                         <div class="custom-control custom-radio">
-                            <input v-model="data.source" type="radio" id="five-grams" name="customRadio" class="custom-control-input" value="quintgrams">
-                            <label class="custom-control-label" for="five-grams">Top 50 Quintgrams</label>
+                            <input v-model="data.source" type="radio" id="five-grams" name="customRadio" class="custom-control-input" value="pentagrams">
+                            <label class="custom-control-label" for="five-grams">Top 50 Pentagrams</label>
                         </div>
                         <div class="custom-control custom-radio">
                             <input v-model="data.source" type="radio" id="words_50" name="customRadio" class="custom-control-input" value="words_50">
@@ -238,8 +238,8 @@
                 return {
                     bigrams: bigrams,
                     trigrams: trigrams,
-                    quadgrams: quadgrams,
-                    quintgrams: quintgrams,
+                    tetragrams: tetragrams,
+                    pentagrams: pentagrams,
                     words_50: words_50,
                     words_200: words_200,
 
@@ -263,7 +263,7 @@
                             phrases: {},
                             phrasesCurrentIndex: 0,
                         },
-                        quadgrams: {
+                        tetragrams: {
                             combination: 2,
                             repetition: 3,
                             minimumWPM: 40,
@@ -272,7 +272,7 @@
                             phrases: {},
                             phrasesCurrentIndex: 0,
                         },
-                        quintgrams: {
+                        pentagrams: {
                             combination: 2,
                             repetition: 3,
                             minimumWPM: 40,
@@ -342,17 +342,22 @@
                     this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex];
 
                     // Back-compatibility for those existing users
-                    // to avoid issues with the newly added Quintgrams (5-grams):
-                    if (!this.data.quintgrams) {
-                        this.data.quintgrams = {
-                            combination: 2,
-                            repetition: 3,
-                            minimumWPM: 40,
-                            minimumAccuracy: 100,
-                            WPMs: [],
-                            phrases: {},
-                            phrasesCurrentIndex: 0,
-                        };
+                    // to avoid issues with the newly added Pentagrams (5-grams),
+                    // and the renaming of Quadgrams to Tetragrams:
+                    var defaultConfig = {
+                        combination: 2,
+                        repetition: 3,
+                        minimumWPM: 40,
+                        minimumAccuracy: 100,
+                        WPMs: [],
+                        phrases: {},
+                        phrasesCurrentIndex: 0,
+                    };
+                    if (!this.data.tetragrams) {
+                        this.data.tetragrams = this.data.quadgrams;
+                    }
+                    if (!this.data.pentagrams) {
+                        this.data.pentagrams = this.deepCopy(defaultConfig);
                     }
                 }
 

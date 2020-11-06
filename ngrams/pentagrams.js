@@ -1,4 +1,4 @@
-const quintgrams = [
+const pentagrams = [
     'ation',
     'tions',
     'which',

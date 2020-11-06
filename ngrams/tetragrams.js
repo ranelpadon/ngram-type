@@ -1,4 +1,4 @@
-const quadgrams = [
+const tetragrams = [
     'tion',
     'atio',
     'that',
