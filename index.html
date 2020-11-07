@@ -373,7 +373,7 @@
                     if (!this.data.pentagrams) {
                         this.data.pentagrams = this.deepCopy(defaultConfig);
                     }
-                    if (!this.data.soundEnabled) {
+                    if (typeof(this.data.soundEnabled) == 'undefined') {
                         this.data.soundEnabled = true;
                     }
                 }
