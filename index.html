@@ -131,6 +131,12 @@
             background-color: #E7BBDC;
         }
 
+        .sound-toggler-wrapper {
+            position: fixed;
+            top: 40px;
+            right: 50px;
+        }
+
         #timer-wrapper {
             height: 40px;
             margin-top: -20px;
@@ -230,6 +236,13 @@
                 Ngram Type
             <a>
         </h3>
+
+        <div class="form-group sound-toggler-wrapper">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="sound-toggler" v-model="data.soundEnabled">
+                <label class="custom-control-label" for="sound-toggler">Sound</label>
+            </div>
+        </div>
     </div>
     <script type="text/javascript">
         var ngramTypeConfig = {
@@ -245,6 +258,7 @@
 
                     data: {
                         source: 'bigrams',
+                        soundEnabled: true,
                         bigrams: {
                             combination: 2,
                             repetition: 3,
@@ -395,6 +409,9 @@
 
                     this.resetCurrentPhraseMetrics();
                 },
+                'data.soundEnabled': function() {
+                    this.save();
+                },
                 typedPhrase: function() {
                     // Make sure to reset any error color when moving to next lesson,
                     // lesson being reset, all chars being deleted, etc. 
@@ -491,16 +508,20 @@
                     }
 
                     if (this.expectedPhrase.startsWith(typedPhrase)) {
-                        this.stopCurrentPlayingSound();
-                        this.correctLetterSound.play();
-                        this.currentPlayingSound = this.correctLetterSound;
+                        if (this.data.soundEnabled) {
+                            this.stopCurrentPlayingSound();
+                            this.correctLetterSound.play();
+                            this.currentPlayingSound = this.correctLetterSound;
+                        }
                         this.isInputCorrect = true;
                         this.hitsCorrect += 1;
                     }
                     else {
-                        this.stopCurrentPlayingSound();
-                        this.incorrectLetterSound.play();
-                        this.currentPlayingSound = this.incorrectLetterSound;
+                        if (this.data.soundEnabled) {
+                            this.stopCurrentPlayingSound();
+                            this.incorrectLetterSound.play();
+                            this.currentPlayingSound = this.incorrectLetterSound;
+                        }
                         this.isInputCorrect = false;
                         this.hitsWrong += 1;
                     }
@@ -524,9 +545,11 @@
                             this.rawWPM < dataSource.minimumWPM
                             || this.accuracy < dataSource.minimumAccuracy
                         ) {
-                            this.stopCurrentPlayingSound();
-                            this.incorrectPhraseSound.play();
-                            this.currentPlayingSound = this.incorrectPhraseSound;
+                            if (this.data.soundEnabled) {
+                                this.stopCurrentPlayingSound();
+                                this.incorrectPhraseSound.play();
+                                this.currentPlayingSound = this.incorrectPhraseSound;
+                            }
                             this.resetCurrentPhraseMetrics();
                             return;
                         }
@@ -539,9 +562,11 @@
                         }
                         dataSource.WPMs.push(this.rawWPM);
 
-                        this.stopCurrentPlayingSound();
-                        this.correctPhraseSound.play();
-                        this.currentPlayingSound = this.correctPhraseSound;
+                        if (this.data.soundEnabled) {
+                            this.stopCurrentPlayingSound();
+                            this.correctPhraseSound.play();
+                            this.currentPlayingSound = this.correctPhraseSound;
+                        }
                         this.nextPhrase();
                     }
                 },
