@@ -43,7 +43,7 @@
     <style>
         body {
             margin: 20px;
-            overflow: hidden;
+            /* overflow: hidden; */
         }
 
         .card-body {
@@ -82,7 +82,7 @@
 
         input.form-control-lg,
         .word {
-            font-size: 40px;
+            font-size: 32px;
             height: 60px;
             text-align: center;
         }
@@ -138,10 +138,22 @@
             right: 50px;
         }
 
+        .stats {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
         #timer-wrapper {
             height: 40px;
-            margin-top: -20px;
+            margin-top: -10px;
+            margin-bottom: 60px;
         }
+
+        /* .title-wrapper {
+            position: fixed;
+            bottom: 20px;
+            width: calc(100% - 42px);
+        } */
     </style>
 </head>
 <body>
@@ -221,10 +233,10 @@
                     id="input-typing" type="text" placeholder="Re-type if failed, press <TAB> or <ESC> to reset" v-on:keyup="keyHandler"
                 >
             </div>
-            <div class="input-practice-typing form-group input-fields">
+            <!-- <div class="input-practice-typing form-group input-fields">
                 <label class="col-form-label col-form-label-lg"></label>
                 <input class="form-control form-control-lg" type="text" placeholder="Practice tricky parts slowly here">
-            </div>
+            </div> -->
         </div>
         <div class="center stats">
             <h4>Raw WPM: {{ rawWPM }} </h4>
@@ -236,7 +248,7 @@
             <div class="timer well">
             </div>
         </div>
-        <h3 class="center card-header">
+        <h3 class="title-wrapper center card-header">
             <a class="title" href="https://github.com/ranelpadon/ngram-type">
                 Ngram Type
             <a>
