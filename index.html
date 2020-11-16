@@ -21,6 +21,7 @@
     <script src="./ngrams/pentagrams.js"></script>
     <script src="./ngrams/words-50.js"></script>
     <script src="./ngrams/words-200.js"></script>
+    <script src="./ngrams/words-100-fil.js"></script>
 
     <!-- VueJS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
@@ -166,13 +167,17 @@
                             <input v-model="data.source" type="radio" id="five-grams" name="customRadio" class="custom-control-input" value="pentagrams">
                             <label class="custom-control-label" for="five-grams">Top 50 Pentagrams</label>
                         </div>
-                        <div class="custom-control custom-radio">
+                        <!-- <div class="custom-control custom-radio">
                             <input v-model="data.source" type="radio" id="words_50" name="customRadio" class="custom-control-input" value="words_50">
                             <label class="custom-control-label" for="words_50">Top 50 Words</label>
-                        </div>
+                        </div> -->
                         <div class="custom-control custom-radio">
                             <input v-model="data.source" type="radio" id="words_200" name="customRadio" class="custom-control-input" value="words_200">
-                            <label class="custom-control-label" for="words_200">Top 200 Words</label>
+                            <label class="custom-control-label" for="words_200">Top 200 English Words</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input v-model="data.source" type="radio" id="words_100_fil" name="customRadio" class="custom-control-input" value="words_100_fil">
+                            <label class="custom-control-label" for="words_100_fil">Top 100 Filipino Words</label>
                         </div>
                     </div>
                 </fieldset>
@@ -255,6 +260,7 @@
                     pentagrams: pentagrams,
                     words_50: words_50,
                     words_200: words_200,
+                    words_100_fil: words_100_fil,
 
                     data: {
                         source: 'bigrams',
@@ -305,6 +311,15 @@
                             phrasesCurrentIndex: 0,
                         },
                         words_200: {
+                            combination: 2,
+                            repetition: 3,
+                            minimumWPM: 40,
+                            minimumAccuracy: 100,
+                            WPMs: [],
+                            phrases: {},
+                            phrasesCurrentIndex: 0,
+                        },
+                        words_100_fil: {
                             combination: 2,
                             repetition: 3,
                             minimumWPM: 40,
@@ -372,6 +387,9 @@
                     }
                     if (!this.data.pentagrams) {
                         this.data.pentagrams = this.deepCopy(defaultConfig);
+                    }
+                    if (!this.data.words_100_fil) {
+                        this.data.words_100_fil = this.deepCopy(defaultConfig);
                     }
                     if (typeof(this.data.soundEnabled) == 'undefined') {
                         this.data.soundEnabled = true;
