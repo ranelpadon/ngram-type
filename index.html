@@ -21,7 +21,7 @@
     <script src="./ngrams/pentagrams.js"></script>
     <script src="./ngrams/words-50.js"></script>
     <script src="./ngrams/words-200.js"></script>
-    <script src="./ngrams/words-100-fil.js"></script>
+    <script src="./ngrams/words-200-fil.js"></script>
 
     <!-- VueJS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
@@ -188,8 +188,8 @@
                             <label class="custom-control-label" for="words_200">Top 200 English Words</label>
                         </div>
                         <div class="custom-control custom-radio">
-                            <input v-model="data.source" type="radio" id="words_100_fil" name="customRadio" class="custom-control-input" value="words_100_fil">
-                            <label class="custom-control-label" for="words_100_fil">Top 100 Filipino Words</label>
+                            <input v-model="data.source" type="radio" id="words_200_fil" name="customRadio" class="custom-control-input" value="words_200_fil">
+                            <label class="custom-control-label" for="words_200_fil">Top 200 Filipino Words</label>
                         </div>
                     </div>
                 </fieldset>
@@ -272,7 +272,7 @@
                     pentagrams: pentagrams,
                     words_50: words_50,
                     words_200: words_200,
-                    words_100_fil: words_100_fil,
+                    words_200_fil: words_200_fil,
 
                     data: {
                         source: 'bigrams',
@@ -331,7 +331,7 @@
                             phrases: {},
                             phrasesCurrentIndex: 0,
                         },
-                        words_100_fil: {
+                        words_200_fil: {
                             combination: 2,
                             repetition: 3,
                             minimumWPM: 40,
@@ -400,8 +400,8 @@
                     if (!this.data.pentagrams) {
                         this.data.pentagrams = this.deepCopy(defaultConfig);
                     }
-                    if (!this.data.words_100_fil) {
-                        this.data.words_100_fil = this.deepCopy(defaultConfig);
+                    if (!this.data.words_200_fil) {
+                        this.data.words_200_fil = this.deepCopy(defaultConfig);
                     }
                     if (typeof(this.data.soundEnabled) == 'undefined') {
                         this.data.soundEnabled = true;
