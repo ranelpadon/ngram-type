@@ -373,7 +373,7 @@
 
                     var sum = dataSource.WPMs.reduce(function(a, b) { return (a + b) }, 0);
                     var average = sum / dataSource.WPMs.length;
-                    return Math.floor(average);
+                    return Math.round(average);
                 },
             },
             mounted: function() {
@@ -453,7 +453,7 @@
                     }
 
                     if (this.typedPhrase.length == 1) {
-                        this.startTime = Math.floor(new Date().getTime() / 1000);
+                        this.startTime = new Date().getTime() / 1000;
                     }
                 },
                 WPMs: function() {
@@ -563,13 +563,13 @@
                         typedPhrase.length === this.expectedPhrase.length
                         && typedPhrase === this.expectedPhrase
                     ) {
-                        var currentTime = (Math.floor(new Date().getTime() / 1000));
-                        this.rawWPM = Math.floor(
+                        var currentTime = new Date().getTime() / 1000;
+                        this.rawWPM = Math.round(
                             // 5 chars equals 1 word.
                             ((this.hitsCorrect + this.hitsWrong) / 5) / (currentTime - this.startTime) * 60
                         );
 
-                        this.accuracy = Math.floor(
+                        this.accuracy = Math.round(
                             this.hitsCorrect / (this.hitsCorrect + this.hitsWrong) * 100
                         );
 
