@@ -236,17 +236,15 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-                            <!-- <h4 class="modal-title">Custom Words</h4> -->
                         </div>
                         <div class="modal-body">
-                            <!-- $('#custom-words-modal textarea').val().split(/\s+/).filter(function(element){return element}) -->
                             <p>Put the custom words here, separated by spaces/newlines.</p>
                             <textarea id="custom-words-modal--text-area" rows="10" cols="94">
                             </textarea>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" v-on:click="customWordsModalSubmit">OK</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" v-on:click="customWordsModalSubmit">OK</button>
                         </div>
                     </div>
                 </div>
