@@ -22,6 +22,7 @@
     <script src="./ngrams/words-50.js"></script>
     <script src="./ngrams/words-200.js"></script>
     <script src="./ngrams/words-200-fil.js"></script>
+    <script src="./ngrams/pangrams.js"></script>
 
     <!-- VueJS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
@@ -66,6 +67,10 @@
         legend.combination,
         legend.repetition {
             margin-bottom: 0;
+        }
+
+        .modal-dialog {
+            padding-top: 8%;
         }
 
         .expected-phrase,
@@ -146,7 +151,7 @@
         #timer-wrapper {
             height: 40px;
             margin-top: -10px;
-            margin-bottom: 60px;
+            margin-bottom: 35px;
         }
 
         /* .title-wrapper {
@@ -191,6 +196,11 @@
                             <input v-model="data.source" type="radio" id="words_200_fil" name="customRadio" class="custom-control-input" value="words_200_fil">
                             <label class="custom-control-label" for="words_200_fil">Top 200 Filipino Words</label>
                         </div>
+                        <div class="custom-control custom-radio">
+                            <input v-model="data.source" type="radio" id="custom_words" name="customRadio" class="custom-control-input" value="custom_words">
+                            <label class="custom-control-label" for="custom_words">Pangrams / </label>
+                            <a href="#" data-toggle="modal" data-target="#custom-words-modal" v-on:click="customWordsModalShow">Custom</a>
+                        </div>
                     </div>
                 </fieldset>
                 <fieldset>
@@ -198,11 +208,11 @@
                     <div class="form-group">
                         <label class="col-form-label col-form-label-sm">Combination</label>
                         <input v-model.number="data[data['source']].combination" v-on:change="refreshPhrases"
-                            class="form-control form-control-sm" type="number"
+                            class="form-control form-control-sm" type="number" min="1"
                         >
                         <label class="col-form-label col-form-label-sm">Repetition</label>
                         <input v-model.number="data[data['source']].repetition" v-on:change="refreshPhrases"
-                            class="form-control form-control-sm" type="number"
+                            class="form-control form-control-sm" type="number" min="1"
                         >
                     </div>
                 </fieldset>
@@ -211,14 +221,35 @@
                     <div class="form-group">
                         <label class="col-form-label col-form-label-sm">WPM</label>
                         <input v-model.number="data[data['source']].minimumWPM" v-on:change="save"
-                            class="form-control form-control-sm" type="number"
+                            class="form-control form-control-sm" type="number" min="1" max="500"
                         >
                         <label class="col-form-label col-form-label-sm">Accuracy</label>
                         <input v-model.number="data[data['source']].minimumAccuracy"
-                            class="form-control form-control-sm" type="number" v-on:change="save"
+                            class="form-control form-control-sm" type="number" min="1" max="100" v-on:change="save"
                         >
                     </div>
                 </fieldset>
+            </div>
+
+            <!-- Modal for the custom texe. -->
+            <div id="custom-words-modal" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                            <!-- <h4 class="modal-title">Custom Words</h4> -->
+                        </div>
+                        <div class="modal-body">
+                            <!-- $('#custom-words-modal textarea').val().split(/\s+/).filter(function(element){return element}) -->
+                            <p>Put the custom words here, separated by spaces/newlines.</p>
+                            <textarea id="custom-words-modal--text-area" rows="10" cols="94">
+                            </textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" v-on:click="customWordsModalSubmit">OK</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="center">
@@ -273,6 +304,8 @@
                     words_50: words_50,
                     words_200: words_200,
                     words_200_fil: words_200_fil,
+                    pangrams: pangrams,
+                    custom_words: null,
 
                     data: {
                         source: 'bigrams',
@@ -340,6 +373,24 @@
                             phrases: {},
                             phrasesCurrentIndex: 0,
                         },
+                        pangrams: {
+                            combination: 2,
+                            repetition: 3,
+                            minimumWPM: 40,
+                            minimumAccuracy: 100,
+                            WPMs: [],
+                            phrases: {},
+                            phrasesCurrentIndex: 0,
+                        },
+                        custom_words: {
+                            combination: 2,
+                            repetition: 3,
+                            minimumWPM: 40,
+                            minimumAccuracy: 100,
+                            WPMs: [],
+                            phrases: {},
+                            phrasesCurrentIndex: 0,
+                        },
                     },
 
                     phrases: [],
@@ -355,7 +406,20 @@
             },
             computed: {
                 dataSource: function() {
-                    return this.data[this.data['source']];
+                    var defaultConfig = {
+                        combination: 2,
+                        repetition: 3,
+                        minimumWPM: 40,
+                        minimumAccuracy: 100,
+                        WPMs: [],
+                        phrases: {},
+                        phrasesCurrentIndex: 0,
+                    };
+                    var dataSource = this.data['source'];
+                    if (!this.data[dataSource]) {
+                        this.data[dataSource] = defaultConfig;
+                    }
+                    return this.data[dataSource];
                 },
                 WPMs: function() {
                     var dataSource = this.dataSource;
@@ -445,6 +509,12 @@
                 'data.soundEnabled': function() {
                     this.save();
                 },
+                custom_words: function() {
+                    this.refreshPhrases();
+                    // Save state in case of page reload.
+                    this.save();
+                    this.resetCurrentPhraseMetrics();
+                },
                 typedPhrase: function() {
                     // Make sure to reset any error color when moving to next lesson,
                     // lesson being reset, all chars being deleted, etc. 
@@ -503,7 +573,18 @@
                     this.save();
                 },
                 generatePhrases: function(numberOfItemsToCombine, repetitions) {
-                    var ngrams = this.deepCopy(this[this.data['source']]);
+                    var dataSource = this.data['source'];
+                    if (dataSource === 'custom_words') {
+                        // User has set the custom words.
+                        if (this.custom_words) {
+                            dataSource = 'custom_words';
+                        }
+                        // Pangrams as default.
+                        else {
+                            dataSource = 'pangrams';
+                        }
+                    }
+                    var ngrams = this.deepCopy(this[dataSource]);
                     this.shuffle(ngrams);
                     var ngramsProcessed = 0;
                     var phrases = [];
@@ -622,6 +703,19 @@
                     else {
                         this.refreshPhrases();
                     }
+                },
+                customWordsModalShow: function() {
+                    var $customWordsModal = $('#custom-words-modal');
+                    var customWords = (this.custom_words || this.pangrams).join('\n')
+                    $customWordsModal.find('textarea').val(customWords);
+                },
+                customWordsModalSubmit: function() {
+                    var $customWordsModal = $('#custom-words-modal');
+                    var customWordsSubmitted = $customWordsModal.find('textarea').val();
+                    // Convert to array, remove the empty string.
+                    var customWordsProccessed = customWordsSubmitted.split(/\s+/).filter(function(element) {return element});
+                    $customWordsModal.modal("hide");
+                    this.custom_words = customWordsProccessed;
                 },
             },
         };
