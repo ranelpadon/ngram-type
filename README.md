@@ -44,7 +44,7 @@ Using the **Top 50 Words** as sample source, you could have sample lessons/patte
 
 
 ## Effective Practice
-The ultimate aim of Ngram Type is to have good typing performance in real-life scenarios, or in typing sites like [Monkey Type](monkeytype.com/)/[10 Fast Fingers](https://10fastfingers.com/). To excel in these contexts, need to practice with `Repetition=1` and `Combination=max` where `max` usually is between `20-40`. That's what I did also before since I really want to improve my **Monkey Type** performance. Monkey Type has similar settings to that of `Repetition=1` and `Combination=200` (i.e. using the **Top 200** English words). But of course, having `Combination=200` in Ngram Type is not realistic, even athletes practice mostly in short bursts/sessions instead of full game.
+The ultimate aim of Ngram Type is to have good typing performance in real-life scenarios, or in typing sites like [Monkey Type](https://monkeytype.com/)/[10 Fast Fingers](https://10fastfingers.com/). To excel in these contexts, need to practice with `Repetition=1` and `Combination=max` where `max` usually is between `20-40`. That's what I did also before since I really want to improve my **Monkey Type** performance. Monkey Type has similar settings to that of `Repetition=1` and `Combination=200` (i.e. using the **Top 200** English words). But of course, having `Combination=200` in Ngram Type is not realistic, even athletes practice mostly in short bursts/sessions instead of full game.
 
 So, here's one good training pattern (increasing `Combination`, and decreasing `Repetition` through time):
 
