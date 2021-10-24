@@ -14,12 +14,16 @@
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
     <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- Ngrams Sources. -->
     <script src="./ngrams/bigrams.js"></script>
     <script src="./ngrams/trigrams.js"></script>
     <script src="./ngrams/tetragrams.js"></script>
+    <script src="./ngrams/pentagrams.js"></script>
     <script src="./ngrams/words-50.js"></script>
     <script src="./ngrams/words-200.js"></script>
+    <script src="./ngrams/words-200-fil.js"></script>
     <script src="./ngrams/pangrams.js"></script>
 
     <!-- VueJS -->
@@ -41,8 +45,12 @@
 
     <style>
         body {
-            margin: 20px;
+            /* margin: 20px; */
             /* overflow: hidden; */
+        }
+
+        #app {
+            height: 100vh;
         }
 
         .card-body {
@@ -53,11 +61,13 @@
             background-color: #2D394D;
         }
 
-        .card-header a {
+        .card-header a,
+        .footer-links a {
             color: #00BC8C;
         }
 
-        .card-header a:hover {
+        .card-header a:hover,
+        .footer-links a:hover {
             color: #FF7A90;
             text-decoration: none;
         }
@@ -150,6 +160,21 @@
             height: 40px;
             margin-top: -10px;
             margin-bottom: 76px;
+        }
+
+        .footer-links {
+            font-size: 12px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            margin: 0 4px;
+        }
+
+        .footer-links .label {
+            display: inline-block;
+            margin-left: 2px;
         }
 
         /* .title-wrapper {
@@ -260,8 +285,22 @@
             </div>
         </div>
         <h3 class="title-wrapper center card-header">
-            <a class="title" href="https://github.com/ranelpadon/ngram-type">
+            <a class="title" href="https://github.com/ranelpadon/ngram-type" target="_blank">
                 Ngram Type
+            <a>
+        </h3>
+        <h3 class="title-wrapper center footer-links">
+            <a class="title" href="https://github.com/ranelpadon/ngram-type/issues" target="_blank">
+                <i class="fa fa-lightbulb-o"></i>
+                <div class="label">
+                    Suggest Improvements
+                </div>
+            <a>
+            <a class="title" href="https://ko-fi.com/ranelpadon" target="_blank">
+                <i class="fa fa-coffee"></i>
+                <div class="label">
+                    Buy Me a Coffee
+                </div>
             <a>
         </h3>
 
