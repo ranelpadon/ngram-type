@@ -641,7 +641,9 @@
                         return;
                     }
 
-                    var typedPhrase = this.typedPhrase.trimStart();
+                    // Remove spaces at both ends of the phrase
+                    // which might be accidentally typed.
+                    var typedPhrase = this.typedPhrase.trim();
                     if (!typedPhrase.length) {
                         return;
                     }
