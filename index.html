@@ -140,10 +140,19 @@
             transform: scale(0.50);
         }
 
-        .form-group input:-ms-input-placeholder {
+        .lesson-index h4 {
+            margin-top: 12px;
+        }
+
+        .lesson-index h4,
+        .stats h4 {
             font-size: 20px;
         }
 
+        /** These two seems couldn't be combined. **/
+        .form-group input:-ms-input-placeholder {
+            font-size: 20px;
+        }
         .form-group input::-moz-placeholder {
             font-size: 20px;
         }
@@ -161,12 +170,13 @@
         .stats {
             margin-top: 5px;
             margin-bottom: 5px;
+            opacity: 0.65;
         }
 
         #timer-wrapper {
-            height: 40px;
-            margin-top: -10px;
-            margin-bottom: 76px;
+            position: fixed;
+            top: 40px;
+            left: 50px;
         }
 
         .footer-links {
@@ -268,7 +278,7 @@
                 </div>
             </div>
 
-            <div class="center">
+            <div class="lesson-index center">
                 <h4>Lesson {{ data[data['source']].phrasesCurrentIndex + 1 }} / {{ data[data['source']].phrases.length }}</h4>
             </div>
             <div class="expected-phrase word text-white bg-primary mb-3">
@@ -276,13 +286,21 @@
             </div>
             <div class="form-group input-fields">
                 <label class="col-form-label col-form-label-lg"></label>
-                <input v-model="typedPhrase" :class="{'form-control': true, 'form-control-lg': true, 'incorrect-input': !isInputCorrect}"
-                    id="input-typing" type="text" autocorrect="off" autocapitalize="none" placeholder="Re-type if failed, press <TAB> or <ESC> to reset" spellcheck="false" v-on:keyup="keyHandler"
+                <input
+                    v-model="typedPhrase"
+                    :class="{'form-control': true, 'form-control-lg': true, 'incorrect-input': !isInputCorrect}"
+                    id="input-typing"
+                    type="text"
+                    autocorrect="off"
+                    autocapitalize="none"
+                    placeholder="Re-type if failed, press <TAB> or <ESC> to reset"
+                    spellcheck="false"
+                    v-on:keyup="keyHandler"
                 >
             </div>
         </div>
         <div class="center stats">
-            <h4>Raw WPM: {{ rawWPM }} </h4>
+            <h4>WPM: {{ rawWPM }} </h4>
             &nbsp; &nbsp; &nbsp; &nbsp; <h4>Accuracy: {{ accuracy }} % </h4>
             &nbsp; &nbsp; &nbsp; &nbsp; <h4>Average WPM: {{ averageWPM }} </h4>
         </div>
