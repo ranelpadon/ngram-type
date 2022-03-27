@@ -76,3 +76,11 @@ Increasing `Combination` and decreasing `Repetition` (which re-shuffles the data
 ## Hosted Version
 You could access the online version using GitHub Pages:
 - https://ranelpadon.github.io/ngram-type/
+
+## Translations
+- Russian
+  - Project Page:
+    - https://github.com/aleuxser/ngram-type-ru/
+  - Hosted Version:
+    - https://aleuxser.github.io/ngram-type-ru/
+
