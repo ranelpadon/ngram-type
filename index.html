@@ -68,6 +68,7 @@
             background-color: #2D394D;
         }
 
+        .sound-toggler-wrapper .btn,
         .card-header a,
         .footer-links a,
         .powered-by {
@@ -173,7 +174,7 @@
         .sound-toggler-wrapper {
             font-size: 13px;
             position: fixed;
-            top: 40px;
+            top: 26px;
         }
 
         #timer-wrapper {
@@ -182,6 +183,15 @@
 
         .sound-toggler-wrapper {
             right: 50px;
+            width: 136px;
+        }
+
+        .sound-toggler-wrapper .btn {
+            box-shadow: none;
+            margin-left: 28px;
+            padding: 2px 8px;
+            min-height: 28px;
+            min-width: 65px;
         }
 
         .footer-links {
@@ -360,24 +370,25 @@
         </div>
 
         <div class="form-group sound-toggler-wrapper">
-            <div>
-                Sounds
-            </div>
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="sound-correct-letter-toggler" v-model="data.soundCorrectLetterEnabled">
-                <label class="custom-control-label" for="sound-correct-letter-toggler">Correct Letter</label>
-            </div>
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="sound-incorrect-letter-toggler" v-model="data.soundIncorrectLetterEnabled">
-                <label class="custom-control-label" for="sound-incorrect-letter-toggler">Incorrect Letter</label>
-            </div>
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="sound-passed-threshold-toggler" v-model="data.soundPassedThresholdEnabled">
-                <label class="custom-control-label" for="sound-passed-threshold-toggler">Passed Threshold</label>
-            </div>
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="sound-failed-threshold-toggler" v-model="data.soundFailedThresholdEnabled">
-                <label class="custom-control-label" for="sound-failed-threshold-toggler">Failed Threshold</label>
+            <button type="button" class="btn" data-toggle="collapse" data-target="#sound-togglers">Sounds</button>
+
+            <div id="sound-togglers" class="collapse">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="sound-correct-letter-toggler" v-model="data.soundCorrectLetterEnabled">
+                    <label class="custom-control-label" for="sound-correct-letter-toggler">Correct Letter</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="sound-incorrect-letter-toggler" v-model="data.soundIncorrectLetterEnabled">
+                    <label class="custom-control-label" for="sound-incorrect-letter-toggler">Incorrect Letter</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="sound-passed-threshold-toggler" v-model="data.soundPassedThresholdEnabled">
+                    <label class="custom-control-label" for="sound-passed-threshold-toggler">Passed Threshold</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="sound-failed-threshold-toggler" v-model="data.soundFailedThresholdEnabled">
+                    <label class="custom-control-label" for="sound-failed-threshold-toggler">Failed Threshold</label>
+                </div>
             </div>
         </div>
     </div>
