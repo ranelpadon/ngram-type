@@ -51,33 +51,41 @@
 
     <style>
         body {
-            /* margin: 20px; */
-            /* overflow: hidden; */
+            overflow: auto;
+            background-color: #303030;
+        }
+
+        .row {
+            /* margin: 0 !important; */
         }
 
         #app {
             height: 100vh;
         }
 
+        .navbar {
+            background-color: #2D394D;
+        }
+    
+        .settings-module {
+            max-width: 15rem;
+        }
+
         .card-body {
-            margin-top: 20px;
-            min-height: 480px;
+            /*             margin-top: 20px;
+            min-height: 480px; */
         }
 
         .card-header {
             background-color: #2D394D;
         }
 
-        .sound-toggler-wrapper .btn,
-        .card-header a,
-        .footer-links a,
-        .powered-by {
+        a {
             color: #00BC8C;
+            transition: color .2s;
         }
 
-        .card-header a:hover,
-        .footer-links a:hover,
-        .powered-by a:hover {
+        a:hover {
             color: #FF7A90;
             text-decoration: none;
         }
@@ -120,16 +128,12 @@
             margin-top: -15px;
         }
 
-        fieldset {
-            margin: -20px 30px 20px;
-        }
-
         h4 {
             margin-bottom: 40px;
         }
 
         .input-fields {
-            margin: auto
+            margin: auto;
             max-width: 60rem;
             padding-bottom: 20px;
             padding-top: 20px;
@@ -156,6 +160,7 @@
         .form-group input:-ms-input-placeholder {
             font-size: 20px;
         }
+
         .form-group input::-moz-placeholder {
             font-size: 20px;
         }
@@ -170,15 +175,11 @@
             opacity: 0.65;
         }
 
-        #timer-wrapper,
+        
         .sound-toggler-wrapper {
             font-size: 13px;
-            position: fixed;
-            top: 26px;
-        }
-
-        #timer-wrapper {
-            left: 50px;
+            /* position: fixed;
+            top: 26px; */
         }
 
         .sound-toggler-wrapper {
@@ -227,171 +228,200 @@
         } */
     </style>
 </head>
-<body>
-    <div id="app" class="card">
-        <div class="card-body">
-            <div class="center">
-                <fieldset>
-                    <legend>Source</legend>
-                    <div class="form-group">
-                        <div class="custom-control custom-radio">
-                            <input v-model="data.source" type="radio" id="bi-grams" name="customRadio" class="custom-control-input" value="bigrams">
-                            <label class="custom-control-label" for="bi-grams">Top 50 Bigrams</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input v-model="data.source" type="radio" id="tri-grams" name="customRadio" class="custom-control-input" value="trigrams">
-                            <label class="custom-control-label" for="tri-grams">Top 50 Trigrams</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input v-model="data.source" type="radio" id="four-grams" name="customRadio" class="custom-control-input" value="tetragrams">
-                            <label class="custom-control-label" for="four-grams">Top 50 Tetragrams</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input v-model="data.source" type="radio" id="words_200" name="customRadio" class="custom-control-input" value="words_200">
-                            <label class="custom-control-label" for="words_200">Top 200 English Words</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input v-model="data.source" type="radio" id="custom_words" name="customRadio" class="custom-control-input" value="custom_words">
-                            <label class="custom-control-label" for="custom_words">Pangrams / </label>
-                            <a href="#" data-toggle="modal" data-target="#custom-words-modal" v-on:click="customWordsModalShow">Custom</a>
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend class="combination">Generator</legend>
-                    <div class="form-group">
-                        <label class="col-form-label col-form-label-sm">Combination</label>
-                        <input v-model.number="data[data['source']].combination" v-on:change="refreshPhrases"
-                            class="form-control form-control-sm" type="number" min="1"
-                        >
-                        <label class="col-form-label col-form-label-sm">Repetition</label>
-                        <input v-model.number="data[data['source']].repetition" v-on:change="refreshPhrases"
-                            class="form-control form-control-sm" type="number" min="1"
-                        >
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend class="repetition">Threshold</legend>
-                    <div class="form-group">
-                        <label class="col-form-label col-form-label-sm">WPM</label>
-                        <input v-model.number="data[data['source']].minimumWPM" v-on:change="save"
-                            class="form-control form-control-sm" type="number" min="1" max="500"
-                        >
-                        <label class="col-form-label col-form-label-sm">Accuracy</label>
-                        <input v-model.number="data[data['source']].minimumAccuracy"
-                            class="form-control form-control-sm" type="number" min="1" max="100" v-on:change="save"
-                        >
-                    </div>
-                </fieldset>
-            </div>
 
-            <!-- Modal for the custom texts. -->
-            <div id="custom-words-modal" class="modal fade" role="dialog">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
+<body>
+    <div id="app" class="d-flex flex-column">
+
+        <!--Navbar (sound toggle and timer) start-->
+        <nav class="navbar bg-dark justify-content-center">
+            <div class="container-fluid">
+                <div id="timer-wrapper" class="align-self-start">
+                    <div class="timer well">
+                    </div>
+                </div>
+                
+                <div class="nav-item d-flex">
+                    <div id="sound-togglers" class="collapse pr-4">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="sound-correct-letter-toggler"
+                                v-model="data.soundCorrectLetterEnabled">
+                            <label class="custom-control-label" for="sound-correct-letter-toggler">Correct
+                                Letter</label>
                         </div>
-                        <div class="modal-body">
-                            <p>Put the custom words here, separated by spaces/newlines.</p>
-                            <textarea id="custom-words-modal--text-area" rows="10" cols="94">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="sound-incorrect-letter-toggler"
+                                v-model="data.soundIncorrectLetterEnabled">
+                            <label class="custom-control-label" for="sound-incorrect-letter-toggler">Incorrect
+                                Letter</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="sound-passed-threshold-toggler"
+                                v-model="data.soundPassedThresholdEnabled">
+                            <label class="custom-control-label" for="sound-passed-threshold-toggler">Passed
+                                Threshold</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="sound-failed-threshold-toggler"
+                                v-model="data.soundFailedThresholdEnabled">
+                            <label class="custom-control-label" for="sound-failed-threshold-toggler">Failed
+                                Threshold</label>
+                        </div>
+                    </div>
+
+                    <a href="#" class="align-self-start" data-toggle="collapse" data-target="#sound-togglers">
+                        Sounds
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <!--Navbar end-->
+        
+        <!--Lesson settings start-->
+        <div class="row justify-content-center mx-0">
+            <fieldset class="settings-module col-xl-2 col-sm-4 col-xs-12">
+                <legend>Source</legend>
+                <div class="form-group">
+                    <label class="col-form-label col-form-label-sm">List</label>
+                    <div class="custom-control custom-radio">
+                        <input v-model="data.source" type="radio" id="bi-grams" name="customRadio"
+                            class="custom-control-input" value="bigrams">
+                        <label class="custom-control-label" for="bi-grams">Top 50 Bigrams</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input v-model="data.source" type="radio" id="tri-grams" name="customRadio"
+                            class="custom-control-input" value="trigrams">
+                        <label class="custom-control-label" for="tri-grams">Top 50 Trigrams</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input v-model="data.source" type="radio" id="four-grams" name="customRadio"
+                            class="custom-control-input" value="tetragrams">
+                        <label class="custom-control-label" for="four-grams">Top 50 Tetragrams</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input v-model="data.source" type="radio" id="words_200" name="customRadio"
+                            class="custom-control-input" value="words_200">
+                        <label class="custom-control-label" for="words_200">Top 200 English Words</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input v-model="data.source" type="radio" id="custom_words" name="customRadio"
+                            class="custom-control-input" value="custom_words">
+                        <label class="custom-control-label" for="custom_words">Pangrams / </label>
+                        <a href="#" data-toggle="modal" data-target="#custom-words-modal"
+                            v-on:click="customWordsModalShow">Custom</a>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="settings-module col-xl-2 col-sm-4 col-xs-12">
+                <legend>Generator</legend>
+                <div class="form-group">
+                    <label class="col-form-label col-form-label-sm">Combination</label>
+                    <input v-model.number="data[data['source']].combination" v-on:change="refreshPhrases"
+                        class="form-control form-control-sm" type="number" min="1">
+                    <label class="col-form-label col-form-label-sm">Repetition</label>
+                    <input v-model.number="data[data['source']].repetition" v-on:change="refreshPhrases"
+                        class="form-control form-control-sm" type="number" min="1">
+                </div>
+            </fieldset>
+            <fieldset class="settings-module col-xl-2 col-sm-4 col-xs-12">
+                <legend>Threshold</legend>
+                <div class="form-group">
+                    <label class="col-form-label col-form-label-sm">WPM</label>
+                    <input v-model.number="data[data['source']].minimumWPM" v-on:change="save"
+                        class="form-control form-control-sm" type="number" min="1" max="500">
+                    <label class="col-form-label col-form-label-sm">Accuracy</label>
+                    <input v-model.number="data[data['source']].minimumAccuracy" class="form-control form-control-sm"
+                        type="number" min="1" max="100" v-on:change="save">
+                </div>
+            </fieldset>
+        </div>
+        <!-- Modal for the custom texts. -->
+        <div id="custom-words-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    </div>
+                    <div class="modal-body">
+                        <p>Put the custom words here, separated by spaces/newlines.</p>
+                        <textarea id="custom-words-modal--text-area" rows="10" class="w-100">
                             </textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" v-on:click="customWordsModalSubmit">OK</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" v-on:click="customWordsModalSubmit">OK</button>
                     </div>
                 </div>
             </div>
+        </div>
+        <!--Lesson settings end-->
 
+        <!--Lesson start-->
+        <div class="px-4">
             <div class="lesson-index center">
-                <h4>Lesson {{ data[data['source']].phrasesCurrentIndex + 1 }} / {{ data[data['source']].phrases.length }}</h4>
+                <h4>Lesson {{ data[data['source']].phrasesCurrentIndex + 1 }} / {{
+                    data[data['source']].phrases.length
+                    }}
+                </h4>
             </div>
             <div class="expected-phrase word text-white bg-primary mb-3">
                 {{ expectedPhrase }}
             </div>
             <div class="form-group input-fields">
                 <label class="col-form-label col-form-label-lg"></label>
-                <input
-                    v-model="typedPhrase"
+                <input v-model="typedPhrase"
                     :class="{'form-control': true, 'form-control-lg': true, 'incorrect-input': !isInputCorrect}"
-                    id="input-typing"
-                    type="text"
-                    autocorrect="off"
-                    autocapitalize="none"
-                    placeholder="Re-type if failed, press <TAB> or <ESC> to reset"
-                    spellcheck="false"
-                    v-on:keyup="keyHandler"
-                >
+                    id="input-typing" type="text" autocorrect="off" autocapitalize="none"
+                    placeholder="Re-type if failed, press <TAB> or <ESC> to reset" spellcheck="false"
+                    v-on:keyup="keyHandler">
             </div>
         </div>
-        <div class="center stats">
+        <!--Lesson end-->
+
+        <!--Stats start-->
+        <div class="center stats mt-auto">
             <h4>WPM: {{ rawWPM }} </h4>
             &nbsp; &nbsp; &nbsp; &nbsp; <h4>Accuracy: {{ accuracy }} % </h4>
             &nbsp; &nbsp; &nbsp; &nbsp; <h4>Average WPM: {{ averageWPM }} </h4>
         </div>
+        <!--Stats end-->
 
-        <div id="timer-wrapper" class="center">
-            <div class="timer well">
-            </div>
-        </div>
-        <h3 class="title-wrapper center card-header">
-            <a class="title" href="https://github.com/ranelpadon/ngram-type" target="_blank">
+        <!--Footer start-->
+        <footer>
+            <h3 class="title-wrapper center card-header"><a href="https://github.com/ranelpadon/ngram-type" target="_blank" class="title">
                 Ngram Type
-            </a>
-        </h3>
-        <div class="title-wrapper center footer-links">
-            <a class="title" href="https://github.com/ranelpadon/ngram-type#features" target="_blank">
-                <i class="fa fa-question-circle"></i>
-                <div class="label">
-                    How to Use
-                </div>
-            </a>
-            <a class="title" href="https://github.com/ranelpadon/ngram-type/issues/new" target="_blank">
-                <i class="fa fa-wrench"></i>
-                <div class="label">
-                    Suggest Improvements
-                </div>
-            </a>
-            <a class="title" href="https://ko-fi.com/ranelpadon" target="_blank">
-                <i class="fa fa-coffee"></i>
-                <div class="label">
-                    Buy Me a Coffee
-                </div>
-            </a>
-        </div>
-        <div class="title-wrapper center powered-by">
-            <div class="label">
-                <a href="https://vuejs.org/" target="_blank">
-                    Powered By
-                    <img src=./media/images/vuejs.png />
+            </a></h3>
+            <div class="title-wrapper center footer-links mb-0">
+                <a class="title" href="https://github.com/ranelpadon/ngram-type#features" target="_blank">
+                    <i class="fa fa-question-circle"></i>
+                    <div class="label">
+                        How to Use
+                    </div>
+                </a>
+                <a class="title" href="https://github.com/ranelpadon/ngram-type/issues/new" target="_blank">
+                    <i class="fa fa-wrench"></i>
+                    <div class="label">
+                        Suggest Improvements
+                    </div>
+                </a>
+                <a class="title" href="https://ko-fi.com/ranelpadon" target="_blank">
+                    <i class="fa fa-coffee"></i>
+                    <div class="label">
+                        Buy Me a Coffee
+                    </div>
                 </a>
             </div>
-        </div>
-
-        <div class="form-group sound-toggler-wrapper">
-            <button type="button" class="btn" data-toggle="collapse" data-target="#sound-togglers">Sounds</button>
-
-            <div id="sound-togglers" class="collapse">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="sound-correct-letter-toggler" v-model="data.soundCorrectLetterEnabled">
-                    <label class="custom-control-label" for="sound-correct-letter-toggler">Correct Letter</label>
-                </div>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="sound-incorrect-letter-toggler" v-model="data.soundIncorrectLetterEnabled">
-                    <label class="custom-control-label" for="sound-incorrect-letter-toggler">Incorrect Letter</label>
-                </div>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="sound-passed-threshold-toggler" v-model="data.soundPassedThresholdEnabled">
-                    <label class="custom-control-label" for="sound-passed-threshold-toggler">Passed Threshold</label>
-                </div>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="sound-failed-threshold-toggler" v-model="data.soundFailedThresholdEnabled">
-                    <label class="custom-control-label" for="sound-failed-threshold-toggler">Failed Threshold</label>
+            <div class="title-wrapper center powered-by mt-2">
+                <div class="label">
+                    <a href="https://vuejs.org/" target="_blank">
+                        Powered By
+                        <img src=./media/images/vuejs.png />
+                    </a>
                 </div>
             </div>
-        </div>
+        </footer>
+        <!--Footer end-->
+
     </div>
+
     <script type="text/javascript">
         var ngramTypeConfig = {
             el: '#app',
