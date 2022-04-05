@@ -41,10 +41,8 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#input-typing').one('keyup', function() {
-                $('.timer').countimer({
-                    autoStart : true
-                });
+            $('.timer').countimer({
+                autoStart: false,
             });
         });
     </script>
@@ -66,7 +64,7 @@
         .navbar {
             background-color: #2D394D;
         }
-    
+
         .settings-module {
             max-width: 15rem;
         }
@@ -175,7 +173,7 @@
             opacity: 0.65;
         }
 
-        
+
         .sound-toggler-wrapper {
             font-size: 13px;
             /* position: fixed;
@@ -239,7 +237,7 @@
                     <div class="timer well">
                     </div>
                 </div>
-                
+
                 <div class="nav-item d-flex">
                     <div id="sound-togglers" class="collapse pr-4">
                         <div class="custom-control custom-switch">
@@ -275,7 +273,7 @@
             </div>
         </nav>
         <!--Navbar end-->
-        
+
         <!--Lesson settings start-->
         <div class="row justify-content-center mx-0">
             <fieldset class="settings-module col-xl-2 col-sm-4 col-xs-12">
@@ -763,6 +761,18 @@
 
                     return phrases
                 },
+                pauseTimer: function(e) {
+                    var isStopped = $('.timer').countimer('stopped');
+                    if (!isStopped) {
+                        $('.timer').countimer('stop');
+                    }
+                },
+                resumeTimer: function(e) {
+                    var isStopped = $('.timer').countimer('stopped');
+                    if (isStopped) {
+                        $('.timer').countimer('resume');
+                    }
+                },
                 keyHandler: function(e) {
                     var key = e.key;
 
@@ -782,6 +792,8 @@
                     if (!typedPhrase.length) {
                         return;
                     }
+
+                    this.resumeTimer()
 
                     if (this.expectedPhrase.startsWith(typedPhrase)) {
                         if (this.data.soundCorrectLetterEnabled) {
@@ -827,6 +839,7 @@
                                 this.currentPlayingSound = this.incorrectPhraseSound;
                             }
                             this.resetCurrentPhraseMetrics();
+                            this.pauseTimer()
                             return;
                         }
 
@@ -843,6 +856,7 @@
                             this.correctPhraseSound.play();
                             this.currentPlayingSound = this.correctPhraseSound;
                         }
+                        this.pauseTimer()
                         this.nextPhrase();
                     }
                 },
