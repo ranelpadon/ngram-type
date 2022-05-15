@@ -786,9 +786,9 @@
                         return;
                     }
 
-                    // Remove spaces at both ends of the phrase
+                    // Remove spaces at starting of the phrase
                     // which might be accidentally typed.
-                    var typedPhrase = this.typedPhrase.trim();
+                    var typedPhrase = this.typedPhrase.replace(/^ +/, "");
                     if (!typedPhrase.length) {
                         return;
                     }
