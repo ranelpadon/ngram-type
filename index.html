@@ -786,9 +786,8 @@
                         return;
                     }
 
-                    // Remove spaces at both ends of the phrase
-                    // which might be accidentally typed.
-                    var typedPhrase = this.typedPhrase.trim();
+                    // Remove spaces at starting of the phrase
+                    var typedPhrase = this.typedPhrase.trimStart();
                     if (!typedPhrase.length) {
                         return;
                     }
@@ -804,7 +803,7 @@
                         this.isInputCorrect = true;
                         this.hitsCorrect += 1;
                     }
-                    else {
+                    else if (this.expectedPhrase !== typedPhrase.trimEnd()) {
                         if (this.data.soundIncorrectLetterEnabled) {
                             this.stopCurrentPlayingSound();
                             this.incorrectLetterSound.play();
@@ -814,10 +813,7 @@
                         this.hitsWrong += 1;
                     }
 
-                    if (
-                        typedPhrase.length === this.expectedPhrase.length
-                        && typedPhrase === this.expectedPhrase
-                    ) {
+                    if (typedPhrase.trimEnd() === this.expectedPhrase) {
                         var currentTime = new Date().getTime() / 1000;
                         this.rawWPM = Math.round(
                             // 5 chars equals 1 word.
