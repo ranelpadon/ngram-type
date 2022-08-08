@@ -1,0 +1,176 @@
+body {
+    overflow: auto;
+    background-color: #303030;
+}
+
+.row {
+    /* margin: 0 !important; */
+}
+
+#app {
+    height: 100vh;
+}
+
+.navbar {
+    background-color: #2D394D;
+}
+
+.settings-module {
+    max-width: 15rem;
+}
+
+.card-body {
+    /*             margin-top: 20px;
+    min-height: 480px; */
+}
+
+.card-header {
+    background-color: #2D394D;
+}
+
+a {
+    color: #00BC8C;
+    transition: color .2s;
+}
+
+a:hover {
+    color: #FF7A90;
+    text-decoration: none;
+}
+
+legend.combination,
+legend.repetition {
+    margin-bottom: 0;
+}
+
+.modal-dialog {
+    padding-top: 8%;
+}
+
+.expected-phrase,
+input.form-control-lg {
+    max-width: 60rem;
+    margin: auto;
+    height: auto;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+input.form-control-lg,
+.word {
+    font-size: 32px;
+    height: 60px;
+    text-align: center;
+}
+
+.word.mb-3 {
+    height: auto;
+    margin-bottom: 0 !important;
+    padding: 10px;
+}
+
+.stats {
+    margin-top: -15px;
+}
+
+h4 {
+    margin-bottom: 40px;
+}
+
+.input-fields {
+    margin: auto;
+    max-width: 60rem;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.input-practice-typing {
+    margin-top: -30px;
+}
+
+.form-group input::-webkit-input-placeholder {
+    transform: scale(0.50);
+}
+
+.lesson-index h4 {
+    margin-top: 12px;
+}
+
+.lesson-index h4,
+.stats h4 {
+    font-size: 20px;
+}
+
+/** These two seems couldn't be combined. **/
+.form-group input:-ms-input-placeholder {
+    font-size: 20px;
+}
+
+.form-group input::-moz-placeholder {
+    font-size: 20px;
+}
+
+.form-control.incorrect-input {
+    background-color: #E7BBDC;
+}
+
+.stats {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    opacity: 0.65;
+}
+
+
+.sound-toggler-wrapper {
+    font-size: 13px;
+    /* position: fixed;
+    top: 26px; */
+}
+
+.sound-toggler-wrapper {
+    right: 50px;
+    width: 136px;
+}
+
+.sound-toggler-wrapper .btn {
+    box-shadow: none;
+    margin-left: 28px;
+    padding: 2px 8px;
+    min-height: 28px;
+    min-width: 65px;
+}
+
+.footer-links {
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    margin: 0 4px;
+}
+
+.footer-links .label {
+    display: inline-block;
+    margin-left: 2px;
+}
+
+.powered-by a {
+    display: block;
+    font-size: 10px;
+    margin-bottom: 10px;
+}
+
+.powered-by img {
+    height: 14px;
+    margin-bottom: 2px;
+}
+
+/* .title-wrapper {
+    position: fixed;
+    bottom: 20px;
+    width: calc(100% - 42px);
+} */
