@@ -1,4 +1,4 @@
-const words_200 = [
+window.words = [
     'the',
     'be',
     'of',

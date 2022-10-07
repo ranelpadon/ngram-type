@@ -27,10 +27,7 @@
     <script src="./ngrams/bigrams.js"></script>
     <script src="./ngrams/trigrams.js"></script>
     <script src="./ngrams/tetragrams.js"></script>
-    <script src="./ngrams/pentagrams.js"></script>
-    <script src="./ngrams/words-50.js"></script>
-    <script src="./ngrams/words-200.js"></script>
-    <script src="./ngrams/words-200-fil.js"></script>
+    <script src="./ngrams/words.js"></script>
     <script src="./ngrams/pangrams.js"></script>
 
     <!-- VueJS -->
@@ -118,9 +115,9 @@
                         <label class="custom-control-label" for="four-grams">Top 100 Tetragrams</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input v-model="data.source" type="radio" id="words_200" name="customRadio"
-                            class="custom-control-input" value="words_200">
-                        <label class="custom-control-label" for="words_200">Top 200 English Words</label>
+                        <input v-model="data.source" type="radio" id="words" name="customRadio"
+                            class="custom-control-input" value="words">
+                        <label class="custom-control-label" for="words">Top 200 English Words</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input v-model="data.source" type="radio" id="custom_words" name="customRadio"

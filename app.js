@@ -2,13 +2,11 @@ var ngramTypeConfig = {
     el: '#app',
     data: function() {
         return {
+            // Data source mappings.
             bigrams: bigrams,
             trigrams: trigrams,
             tetragrams: tetragrams,
-            pentagrams: pentagrams,
-            words_50: words_50,
-            words_200: words_200,
-            words_200_fil: words_200_fil,
+            words: words,
             pangrams: pangrams,
             custom_words: null,
 
@@ -45,34 +43,7 @@ var ngramTypeConfig = {
                     phrases: {},
                     phrasesCurrentIndex: 0,
                 },
-                pentagrams: {
-                    combination: 2,
-                    repetition: 3,
-                    minimumWPM: 40,
-                    minimumAccuracy: 100,
-                    WPMs: [],
-                    phrases: {},
-                    phrasesCurrentIndex: 0,
-                },
-                words_50: {
-                    combination: 2,
-                    repetition: 3,
-                    minimumWPM: 40,
-                    minimumAccuracy: 100,
-                    WPMs: [],
-                    phrases: {},
-                    phrasesCurrentIndex: 0,
-                },
-                words_200: {
-                    combination: 2,
-                    repetition: 3,
-                    minimumWPM: 40,
-                    minimumAccuracy: 100,
-                    WPMs: [],
-                    phrases: {},
-                    phrasesCurrentIndex: 0,
-                },
-                words_200_fil: {
+                words: {
                     combination: 2,
                     repetition: 3,
                     minimumWPM: 40,
@@ -131,10 +102,6 @@ var ngramTypeConfig = {
         },
         WPMs: function() {
             var dataSource = this.dataSource;
-            // For back-compatibility.
-            if (!dataSource.WPMs) {
-                dataSource.WPMs = [];
-            }
             return dataSource.WPMs;
         },
         averageWPM: function() {
@@ -153,41 +120,17 @@ var ngramTypeConfig = {
             this.load();
             var dataSource = this.dataSource;
             this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex];
-
-            // Back-compatibility for those existing users
-            // to avoid issues with the newly added Pentagrams (5-grams),
-            // and the renaming of Quadgrams to Tetragrams:
-            var defaultConfig = {
-                combination: 2,
-                repetition: 3,
-                minimumWPM: 40,
-                minimumAccuracy: 100,
-                WPMs: [],
-                phrases: {},
-                phrasesCurrentIndex: 0,
-            };
-            if (!this.data.tetragrams) {
-                this.data.tetragrams = this.data.quadgrams;
-            }
-            if (!this.data.pentagrams) {
-                this.data.pentagrams = this.deepCopy(defaultConfig);
-            }
-            if (!this.data.words_200_fil) {
-                this.data.words_200_fil = this.deepCopy(defaultConfig);
-            }
-            if (typeof(this.data.soundEnabled) == 'undefined') {
-                this.data.soundEnabled = true;
-            }
         }
 
         else {
             this.refreshPhrases();
         }
 
-        // Use jQuery instead of Vue for intercepting the <TAB> key.
+        // Use jQuery instead of Vue for intercepting the <Tab>/<Esc> key.
         var that = this;
         $('#input-typing').on('keydown', function(e) {
-            if (e.originalEvent.code == 'Tab') {
+            var key = e.originalEvent.code;
+            if (key == 'Tab' || key == 'Escape') {
                 e.preventDefault();
                 that.resetCurrentPhraseMetrics();
             }
@@ -248,29 +191,11 @@ var ngramTypeConfig = {
         },
     },
     methods: {
-        _migrateSoundSetting: function(soundSetting) {
-            var existingGlobalSoundSetting = this.data.soundEnabled;
-
-            if (!this.data.hasOwnProperty(soundSetting)) {
-                this.data[soundSetting] = existingGlobalSoundSetting;
-            }
-        },
-        _migrateSoundSettings: function() {
-            this._migrateSoundSetting('soundCorrectLetterEnabled');
-            this._migrateSoundSetting('soundIncorrectLetterEnabled');
-            this._migrateSoundSetting('soundPassedThresholdEnabled');
-            this._migrateSoundSetting('soundFailedThresholdEnabled');
-        },
         save: function() {
             localStorage.ngramTypeAppdata = JSON.stringify(this.data);
         },
         load: function () {
             this.data = JSON.parse(localStorage.ngramTypeAppdata);
-
-            // For existing users, the new sound settings
-            // are not yet existing, so we set them
-            // using the previous/global sound setting.
-            this._migrateSoundSettings();
         },
         deepCopy: function(arrayOrObject) {
             var emptyArrayOrObject = $.isArray(arrayOrObject) ? [] : {};
@@ -298,7 +223,6 @@ var ngramTypeConfig = {
             if (this.currentPlayingSound) {
                 this.currentPlayingSound.currentTime = 0;
             }
-
         },
         refreshPhrases: function() {
             var dataSource = this.dataSource;
@@ -319,6 +243,7 @@ var ngramTypeConfig = {
                     dataSource = 'pangrams';
                 }
             }
+            // Use indexing here to limit scope of Ngrams.
             var ngrams = this.deepCopy(this[dataSource]);
             this.shuffle(ngrams);
             var ngramsProcessed = 0;
@@ -352,11 +277,6 @@ var ngramTypeConfig = {
         },
         keyHandler: function(e) {
             var key = e.key;
-
-            if (key == 'Escape') {
-                this.resetCurrentPhraseMetrics();
-                return;
-            }
 
             // For other miscellaneous keys.
             if (key.length > 1) {
@@ -416,10 +336,9 @@ var ngramTypeConfig = {
                     return;
                 }
 
-                // For back-compatibility,
-                // or when starting a new round in the same lesson.
+                // Reset WPMs when starting a new round in the same lesson.
                 var newRoundStarted = (dataSource.phrasesCurrentIndex == 0);
-                if (!dataSource.WPMs || newRoundStarted) {
+                if (newRoundStarted) {
                     dataSource.WPMs = [];
                 }
                 dataSource.WPMs.push(this.rawWPM);
