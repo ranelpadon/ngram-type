@@ -16,7 +16,7 @@ body {
 }
 
 .settings-module {
-    max-width: 15rem;
+    max-width: 10rem;
 }
 
 .card-body {
@@ -41,6 +41,10 @@ a:hover {
 legend.combination,
 legend.repetition {
     margin-bottom: 0;
+}
+
+input.form-control[type=number] {
+    max-width: 60%;
 }
 
 .modal-dialog {
