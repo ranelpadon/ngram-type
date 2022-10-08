@@ -2,6 +2,10 @@ var ngramTypeConfig = {
     el: '#app',
     data: function() {
         return {
+            // If there are major schema changes, increment this number.
+            // and update the `data-reset-modal` message.
+            VERSION: 2.0,
+
             // Data source mappings.
             bigrams: bigrams,
             trigrams: trigrams,
@@ -17,6 +21,7 @@ var ngramTypeConfig = {
                 soundPassedThresholdEnabled: true,
                 soundFailedThresholdEnabled: true,
                 bigrams: {
+                    scope: 50,
                     combination: 2,
                     repetition: 3,
                     minimumWPM: 40,
@@ -26,6 +31,7 @@ var ngramTypeConfig = {
                     phrasesCurrentIndex: 0,
                 },
                 trigrams: {
+                    scope: 50,
                     combination: 2,
                     repetition: 3,
                     minimumWPM: 40,
@@ -35,6 +41,7 @@ var ngramTypeConfig = {
                     phrasesCurrentIndex: 0,
                 },
                 tetragrams: {
+                    scope: 50,
                     combination: 2,
                     repetition: 3,
                     minimumWPM: 40,
@@ -44,6 +51,7 @@ var ngramTypeConfig = {
                     phrasesCurrentIndex: 0,
                 },
                 words: {
+                    scope: 50,
                     combination: 2,
                     repetition: 3,
                     minimumWPM: 40,
@@ -53,6 +61,7 @@ var ngramTypeConfig = {
                     phrasesCurrentIndex: 0,
                 },
                 pangrams: {
+                    scope: null,
                     combination: 2,
                     repetition: 3,
                     minimumWPM: 40,
@@ -62,6 +71,7 @@ var ngramTypeConfig = {
                     phrasesCurrentIndex: 0,
                 },
                 custom_words: {
+                    scope: null,
                     combination: 2,
                     repetition: 3,
                     minimumWPM: 40,
@@ -85,19 +95,7 @@ var ngramTypeConfig = {
     },
     computed: {
         dataSource: function() {
-            var defaultConfig = {
-                combination: 2,
-                repetition: 3,
-                minimumWPM: 40,
-                minimumAccuracy: 100,
-                WPMs: [],
-                phrases: {},
-                phrasesCurrentIndex: 0,
-            };
             var dataSource = this.data['source'];
-            if (!this.data[dataSource]) {
-                this.data[dataSource] = defaultConfig;
-            }
             return this.data[dataSource];
         },
         WPMs: function() {
@@ -116,14 +114,30 @@ var ngramTypeConfig = {
         },
     },
     mounted: function() {
+        // If there's already saved data.
         if (localStorage.ngramTypeAppdata != undefined) {
-            this.load();
-            var dataSource = this.dataSource;
-            this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex];
+            var data = this.getSavedData();
+            if (
+                !data.hasOwnProperty('version')
+                || data.version < this.VERSION
+            ) {
+                // Reset the old/incompatible data.
+                this.reset();
+                $('#data-reset-modal').modal('toggle');
+
+                this.refreshPhrases();
+                this.updateDataVersion()
+            }
+            else {
+                this.load()
+                var dataSource = this.dataSource;
+                this.expectedPhrase = dataSource.phrases[dataSource.phrasesCurrentIndex];
+            }
         }
 
         else {
             this.refreshPhrases();
+            this.updateDataVersion()
         }
 
         // Use jQuery instead of Vue for intercepting the <Tab>/<Esc> key.
@@ -145,6 +159,8 @@ var ngramTypeConfig = {
     watch: {
         'data.source': function() {
             var dataSource = this.dataSource;
+
+            // Set or get the last saved lesson.
             if ($.isEmptyObject(dataSource.phrases)) {
                 this.refreshPhrases();
             }
@@ -171,8 +187,6 @@ var ngramTypeConfig = {
         },
         custom_words: function() {
             this.refreshPhrases();
-            // Save state in case of page reload.
-            this.save();
             this.resetCurrentPhraseMetrics();
         },
         typedPhrase: function() {
@@ -196,6 +210,16 @@ var ngramTypeConfig = {
         },
         load: function () {
             this.data = JSON.parse(localStorage.ngramTypeAppdata);
+        },
+        reset: function () {
+            localStorage.removeItem('ngramTypeAppdata');
+        },
+        getSavedData: function () {
+            return JSON.parse(localStorage.ngramTypeAppdata);
+        },
+        updateDataVersion: function () {
+            this.data.version = this.VERSION;
+            this.save();
         },
         deepCopy: function(arrayOrObject) {
             var emptyArrayOrObject = $.isArray(arrayOrObject) ? [] : {};
@@ -244,7 +268,17 @@ var ngramTypeConfig = {
                 }
             }
             // Use indexing here to limit scope of Ngrams.
-            var ngrams = this.deepCopy(this[dataSource]);
+            var source = this[dataSource];
+            var scope = this.data[dataSource].scope
+
+            // Select the Top 50/100/150/200.
+            // `Pangrams`/`Custom` has no scope.
+            if (scope) {
+                source = source.slice(0, scope)
+            }
+
+            var ngrams = this.deepCopy(source);
+
             this.shuffle(ngrams);
             var ngramsProcessed = 0;
             var phrases = [];

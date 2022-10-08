@@ -60,28 +60,40 @@
                 <div class="nav-item d-flex">
                     <div id="sound-togglers" class="collapse pr-4">
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="sound-correct-letter-toggler"
-                                v-model="data.soundCorrectLetterEnabled">
-                            <label class="custom-control-label" for="sound-correct-letter-toggler">Correct
-                                Letter</label>
+                            <input
+                                type="checkbox"
+                                class="custom-control-input"
+                                id="sound-correct-letter-toggler"
+                                v-model="data.soundCorrectLetterEnabled"
+                            >
+                            <label class="custom-control-label" for="sound-correct-letter-toggler">Correct Letter</label>
                         </div>
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="sound-incorrect-letter-toggler"
-                                v-model="data.soundIncorrectLetterEnabled">
-                            <label class="custom-control-label" for="sound-incorrect-letter-toggler">Incorrect
-                                Letter</label>
+                            <input
+                                type="checkbox"
+                                class="custom-control-input"
+                                id="sound-incorrect-letter-toggler"
+                                v-model="data.soundIncorrectLetterEnabled"
+                            >
+                            <label class="custom-control-label" for="sound-incorrect-letter-toggler">Incorrect Letter</label>
                         </div>
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="sound-passed-threshold-toggler"
-                                v-model="data.soundPassedThresholdEnabled">
-                            <label class="custom-control-label" for="sound-passed-threshold-toggler">Passed
-                                Threshold</label>
+                            <input
+                                type="checkbox"
+                                class="custom-control-input"
+                                id="sound-passed-threshold-toggler"
+                                v-model="data.soundPassedThresholdEnabled"
+                            >
+                            <label class="custom-control-label" for="sound-passed-threshold-toggler">Passed Threshold</label>
                         </div>
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="sound-failed-threshold-toggler"
-                                v-model="data.soundFailedThresholdEnabled">
-                            <label class="custom-control-label" for="sound-failed-threshold-toggler">Failed
-                                Threshold</label>
+                            <input
+                                type="checkbox"
+                                class="custom-control-input"
+                                id="sound-failed-threshold-toggler"
+                                v-model="data.soundFailedThresholdEnabled"
+                            >
+                            <label class="custom-control-label" for="sound-failed-threshold-toggler">Failed Threshold</label>
                         </div>
                     </div>
 
@@ -95,40 +107,134 @@
 
         <!--Lesson settings start-->
         <div class="row justify-content-center mx-0">
-            <fieldset class="settings-module col-xl-2 col-sm-4 col-xs-12">
+            <fieldset class="settings-module col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
                 <legend>Source</legend>
                 <div class="form-group">
-                    <label class="col-form-label col-form-label-sm">List</label>
+                    <label class="col-form-label col-form-label-sm"> &nbsp; </label>
                     <div class="custom-control custom-radio">
-                        <input v-model="data.source" type="radio" id="bi-grams" name="customRadio"
-                            class="custom-control-input" value="bigrams">
-                        <label class="custom-control-label" for="bi-grams">Top 100 Bigrams</label>
+                        <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="bi-grams"
+                            name="source-radio-group"
+                            value="bigrams"
+                            v-model="data.source"
+                        >
+                        <label class="custom-control-label" for="bi-grams">Bigrams</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input v-model="data.source" type="radio" id="tri-grams" name="customRadio"
-                            class="custom-control-input" value="trigrams">
-                        <label class="custom-control-label" for="tri-grams">Top 100 Trigrams</label>
+                        <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="tri-grams"
+                            name="source-radio-group"
+                            value="trigrams"
+                            v-model="data.source"
+                        >
+                        <label class="custom-control-label" for="tri-grams">Trigrams</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input v-model="data.source" type="radio" id="four-grams" name="customRadio"
-                            class="custom-control-input" value="tetragrams">
-                        <label class="custom-control-label" for="four-grams">Top 100 Tetragrams</label>
+                        <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="tetra-grams"
+                            name="source-radio-group"
+                            value="tetragrams"
+                            v-model="data.source"
+                        >
+                        <label class="custom-control-label" for="tetra-grams">Tetragrams</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input v-model="data.source" type="radio" id="words" name="customRadio"
-                            class="custom-control-input" value="words">
-                        <label class="custom-control-label" for="words">Top 200 English Words</label>
+                        <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="words"
+                            name="source-radio-group"
+                            value="words"
+                            v-model="data.source"
+                        >
+                        <label class="custom-control-label" for="words">Words</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input v-model="data.source" type="radio" id="custom_words" name="customRadio"
-                            class="custom-control-input" value="custom_words">
+                        <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="custom_words"
+                            name="source-radio-group"
+                            value="custom_words"
+                            v-model="data.source"
+                        >
                         <label class="custom-control-label" for="custom_words">Pangrams / </label>
-                        <a href="#" data-toggle="modal" data-target="#custom-words-modal"
-                            v-on:click="customWordsModalShow">Custom</a>
+                        <a
+                            href="#"
+                            data-toggle="modal"
+                            data-target="#custom-words-modal"
+                            :click="customWordsModalShow"
+                        >
+                            Custom
+                        </a>
                     </div>
                 </div>
             </fieldset>
-            <fieldset class="settings-module col-xl-2 col-sm-4 col-xs-12">
+            <fieldset class="settings-module col-xl-2 col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                <legend>Scope</legend>
+                <div class="form-group">
+                    <label class="col-form-label col-form-label-sm"> &nbsp; </label>
+                    <div class="custom-control custom-radio">
+                        <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="top-50"
+                            name="scope-radio-group"
+                            value="50"
+                            v-model.number="data[data['source']].scope"
+                            v-on:change="refreshPhrases"
+                            :disabled="data.source == 'custom_words'"
+                        >
+                        <label class="custom-control-label" for="top-50">Top 50</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="top-100"
+                            name="scope-radio-group"
+                            value="100"
+                            v-model.number="data[data['source']].scope"
+                            v-on:change="refreshPhrases"
+                            :disabled="data.source == 'custom_words'"
+                        >
+                        <label class="custom-control-label" for="top-100">Top 100</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="top-150"
+                            name="scope-radio-group"
+                            value="150"
+                            v-model.number="data[data['source']].scope"
+                            v-on:change="refreshPhrases"
+                            :disabled="data.source == 'custom_words'"
+                        >
+                        <label class="custom-control-label" for="top-150">Top 150</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="top-200"
+                            name="scope-radio-group"
+                            value="200"
+                            v-model.number="data[data['source']].scope"
+                            v-on:change="refreshPhrases"
+                            :disabled="data.source == 'custom_words'"
+                        >
+                        <label class="custom-control-label" for="top-200">Top 200</label>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="settings-module col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-12">
                 <legend>Generator</legend>
                 <div class="form-group">
                     <label class="col-form-label col-form-label-sm">Combination</label>
@@ -139,7 +245,7 @@
                         class="form-control form-control-sm" type="number" min="1">
                 </div>
             </fieldset>
-            <fieldset class="settings-module col-xl-2 col-sm-4 col-xs-12">
+            <fieldset class="settings-module col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-12">
                 <legend>Threshold</legend>
                 <div class="form-group">
                     <label class="col-form-label col-form-label-sm">WPM</label>
@@ -151,6 +257,7 @@
                 </div>
             </fieldset>
         </div>
+
         <!-- Modal for the custom texts. -->
         <div id="custom-words-modal" class="modal fade" role="dialog">
             <div class="modal-dialog modal-lg">
@@ -165,6 +272,30 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-primary" v-on:click="customWordsModalSubmit">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for the data reset warning. -->
+        <div id="data-reset-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Release Note
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            There are data schema changes to integrate the scoping of sources (i.e. the dynamic <b>Top 50</b>, <b>Top 100</b>, <b>Top 150</b>, or <b>Top 200</b>)
+                            for more flexible and comprehensive training.
+                        </p>
+                        <p>
+                            This means that your saved data will be reset, but you could easily replicate your previous settings.
+                            Likewise, the data reset makes the code simpler/leaner by removing the back-compatibility hacks.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
                     </div>
                 </div>
             </div>
