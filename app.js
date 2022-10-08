@@ -11,7 +11,6 @@ var ngramTypeConfig = {
             trigrams: trigrams,
             tetragrams: tetragrams,
             words: words,
-            pangrams: pangrams,
             custom_words: null,
 
             data: {
@@ -52,16 +51,6 @@ var ngramTypeConfig = {
                 },
                 words: {
                     scope: 50,
-                    combination: 2,
-                    repetition: 3,
-                    minimumWPM: 40,
-                    minimumAccuracy: 100,
-                    WPMs: [],
-                    phrases: {},
-                    phrasesCurrentIndex: 0,
-                },
-                pangrams: {
-                    scope: null,
                     combination: 2,
                     repetition: 3,
                     minimumWPM: 40,
@@ -257,22 +246,12 @@ var ngramTypeConfig = {
         },
         generatePhrases: function(numberOfItemsToCombine, repetitions) {
             var dataSource = this.data['source'];
-            if (dataSource === 'custom_words') {
-                // User has set the custom words.
-                if (this.custom_words) {
-                    dataSource = 'custom_words';
-                }
-                // Pangrams as default.
-                else {
-                    dataSource = 'pangrams';
-                }
-            }
-            // Use indexing here to limit scope of Ngrams.
             var source = this[dataSource];
             var scope = this.data[dataSource].scope
 
+            // Use indexing to limit scope of Ngrams.
             // Select the Top 50/100/150/200.
-            // `Pangrams`/`Custom` has no scope.
+            // `Custom` has no scope.
             if (scope) {
                 source = source.slice(0, scope)
             }
@@ -408,14 +387,16 @@ var ngramTypeConfig = {
         },
         customWordsModalShow: function() {
             var $customWordsModal = $('#custom-words-modal');
-            var customWords = (this.custom_words || this.pangrams).join('\n')
+            var customWords = this.custom_words.join('\n')
             $customWordsModal.find('textarea').val(customWords);
         },
         customWordsModalSubmit: function() {
             var $customWordsModal = $('#custom-words-modal');
             var customWordsSubmitted = $customWordsModal.find('textarea').val();
+
             // Convert to array, remove the empty string.
             var customWordsProccessed = customWordsSubmitted.split(/\s+/).filter(function(element) {return element});
+
             $customWordsModal.modal("hide");
             this.custom_words = customWordsProccessed;
         },

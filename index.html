@@ -28,7 +28,6 @@
     <script src="./ngrams/trigrams.js"></script>
     <script src="./ngrams/tetragrams.js"></script>
     <script src="./ngrams/words.js"></script>
-    <script src="./ngrams/pangrams.js"></script>
 
     <!-- VueJS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
@@ -164,7 +163,7 @@
                             value="custom_words"
                             v-model="data.source"
                         >
-                        <label class="custom-control-label" for="custom_words">Pangrams / </label>
+                        <label class="custom-control-label" for="custom_words">
                         <a
                             href="#"
                             data-toggle="modal"
@@ -173,6 +172,7 @@
                         >
                             Custom
                         </a>
+                        </label>
                     </div>
                 </div>
             </fieldset>
@@ -305,9 +305,11 @@
         <!--Lesson start-->
         <div class="px-4">
             <div class="lesson-index center">
-                <h4>Lesson {{ data[data['source']].phrasesCurrentIndex + 1 }} / {{
-                    data[data['source']].phrases.length
-                    }}
+                <h4 v-show="data[data['source']].phrases.length">
+                    Lesson {{ data[data['source']].phrasesCurrentIndex + 1 }} / {{ data[data['source']].phrases.length }}
+                </h4>
+                <h4 v-show="!data[data['source']].phrases.length">
+                    Click the "Custom" link to input words.
                 </h4>
             </div>
             <div class="expected-phrase word text-white bg-primary mb-3">

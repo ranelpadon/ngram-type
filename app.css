@@ -58,6 +58,10 @@ input.form-control-lg {
     height: auto;
 }
 
+.expected-phrase {
+    min-height: 68px;
+}
+
 .center {
     display: flex;
     justify-content: center;
