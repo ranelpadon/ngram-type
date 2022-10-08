@@ -16,12 +16,12 @@ This **Ngram Type** project name was inspired by [**Amphetype**](https://github.
 
 ## Features
 * Data source could be chosen, based on the most common ngrams/words. Source settings' are independent with each other: lesson generator and minimum performance settings are set for each data source.
-* Custom data source could be inputted using the `Custom` link. Defaults to [**pangrams**](https://en.wikipedia.org/wiki/Pangram) if no custom data is set. Pangrams are useful for training with all letters of the alphabet.
-* Lessons could be customized and generated on-the-fly by varying the `Combination` and `Repetition` settings; you'll immediately see the effect on the generated lesson. Old lessons on the same data source selected will be overridden once you update these settings. Once you completed the lessons, the data will start again at the beginning, but will be re-shuffled.
+* Custom data source could be inputted using the `Custom` link.
+* Lessons could be customized and generated on-the-fly by varying the `Scope`, `Combination`, and `Repetition` settings; you'll immediately see the effect on the generated lesson. Old lessons on the same data source selected will be overridden once you update these settings. Once you completed the lessons, the data will start again at the beginning, but will be re-shuffled.
 * The minimum WPM/Accuracy required could be adjusted depending on your skill level, could be updated even at the mid-part of the lessons. You could not proceed to next lesson unless you have met those minimum performance. Average WPM refers to the average of all the WPMs in the current round of lessons that passed the threshold, which will be reset every round of lesson, so that old/historical averages will not affect the new ones. Average WPM is then a good indicator of your current speed which could be used for adjusting the performance thresholds in the next round of lessons.
 * Has sound effects: correct key, wrong key, or failed the minimum WPM/Accuracy set.
 * Has color indicator if you typed a wrong key.
-* Timer will show once you start typing, for added tracking. There's no time limit though, you practice at your own pace.
+* Timer will start/stop depending in your typing activity. It's included just for tracking.
 * Settings are saved in your browser, and will be auto-loaded when you revisit/reload the page.
 
 
@@ -72,6 +72,8 @@ Repetition=1, Combination=10
 Then, increase the **Speed** threshold on each round (each set of `Repetition` and `Combination`) based on your running average speed, or once you feel that the current set becomes easy/comfortable for you. Likewise, you could also aim up to `Combination=15` or `Combination=20` instead of `Combination=10` only. This guarantees building good muscle memory and continual progress.
 
 Increasing `Combination` and decreasing `Repetition` (which re-shuffles the data ordering as well) makes the exercise harder, which your muscle will adapt eventually. You should start mastering the Bigrams/Trigrams first since they are the building blocks of the English words, so you could have good performance even in `Top 1000` words. Although most typing sites only test for `Top 200` words. But training those Bigrams/Trigrams really well is a good investment. And if you always aim for 100% Accuracy at the expense of speed, eventually your speed will catch up since you will build "good" muscle memory and correcting mistakes is costly. Likewise, if you have low accuracy, you will build a "bad" muscle memory.
+
+You could start with Top 50 bigrams/trigrams/tetragrams/words first. Then, move to Top 100, Top 150, and Top 200 as your performance improves.
 
 ## Hosted Version
 You could access the online version using GitHub Pages:
