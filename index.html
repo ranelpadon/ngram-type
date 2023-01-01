@@ -196,7 +196,7 @@
                             name="scope-radio-group"
                             value="50"
                             v-model.number="data[data['source']].scope"
-                            v-on:change="refreshPhrases"
+                            v-on:change="refreshPhrasesAndCurrentMetrics"
                             :disabled="data.source == 'custom_words'"
                         >
                         <label class="custom-control-label" for="top-50">Top 50</label>
@@ -209,7 +209,7 @@
                             name="scope-radio-group"
                             value="100"
                             v-model.number="data[data['source']].scope"
-                            v-on:change="refreshPhrases"
+                            v-on:change="refreshPhrasesAndCurrentMetrics"
                             :disabled="data.source == 'custom_words'"
                         >
                         <label class="custom-control-label" for="top-100">Top 100</label>
@@ -222,7 +222,7 @@
                             name="scope-radio-group"
                             value="150"
                             v-model.number="data[data['source']].scope"
-                            v-on:change="refreshPhrases"
+                            v-on:change="refreshPhrasesAndCurrentMetrics"
                             :disabled="data.source == 'custom_words'"
                         >
                         <label class="custom-control-label" for="top-150">Top 150</label>
@@ -235,7 +235,7 @@
                             name="scope-radio-group"
                             value="200"
                             v-model.number="data[data['source']].scope"
-                            v-on:change="refreshPhrases"
+                            v-on:change="refreshPhrasesAndCurrentMetrics"
                             :disabled="data.source == 'custom_words'"
                         >
                         <label class="custom-control-label" for="top-200">Top 200</label>

@@ -175,8 +175,7 @@ var ngramTypeConfig = {
             this.save();
         },
         custom_words: function() {
-            this.refreshPhrases();
-            this.resetCurrentPhraseMetrics();
+            this.refreshPhrasesAndCurrentMetrics();
         },
         typedPhrase: function() {
             // Make sure to reset any error color when moving to next lesson,
@@ -244,6 +243,11 @@ var ngramTypeConfig = {
             dataSource.phrasesCurrentIndex = 0;
             this.save();
         },
+        refreshPhrasesAndCurrentMetrics: function() {
+            this.refreshPhrases();
+            this.resetCurrentPhraseMetrics();
+            this.pauseTimer();
+        },
         generatePhrases: function(numberOfItemsToCombine, repetitions) {
             var dataSource = this.data['source'];
             var source = this[dataSource];
@@ -302,7 +306,7 @@ var ngramTypeConfig = {
                 return;
             }
 
-            this.resumeTimer()
+            this.resumeTimer();
 
             if (this.expectedPhrase.startsWith(typedPhrase)) {
                 if (this.data.soundCorrectLetterEnabled) {
