@@ -184,7 +184,12 @@ var ngramTypeConfig = {
                 this.resetCurrentPhraseMetrics();
             }
 
-            if (this.typedPhrase.length == 1) {
+            // Remove the spaces at start of the typed phrase
+            // since the user might have a typing break
+            // but have a habit of typing the spacebar before pausing the session.
+            var typedPhrase = this.typedPhrase.trimStart();
+
+            if (typedPhrase.length == 1) {
                 this.startTime = new Date().getTime() / 1000;
             }
         },
