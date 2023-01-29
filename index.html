@@ -33,6 +33,7 @@
     <script src="./ngrams/bigrams.js"></script>
     <script src="./ngrams/trigrams.js"></script>
     <script src="./ngrams/tetragrams.js"></script>
+    <script src="./ngrams/pangrams.js"></script>
     <script src="./ngrams/words.js"></script>
 
     <!-- VueJS -->
@@ -150,6 +151,17 @@
                             v-model="data.source"
                         >
                         <label class="custom-control-label" for="tetra-grams">Tetragrams</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="pan-grams"
+                            name="source-radio-group"
+                            value="pangrams"
+                            v-model="data.source"
+                        >
+                        <label class="custom-control-label" for="pan-grams">Pangrams</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input

@@ -4,12 +4,13 @@ var ngramTypeConfig = {
         return {
             // If there are major schema changes, increment this number.
             // and update the `data-reset-modal` message.
-            VERSION: 2.0,
+            VERSION: 2.1,
 
             // Data source mappings.
             bigrams: bigrams,
             trigrams: trigrams,
             tetragrams: tetragrams,
+            pangrams: pangrams,
             words: words,
             custom_words: null,
 
@@ -43,6 +44,16 @@ var ngramTypeConfig = {
                     scope: 50,
                     combination: 2,
                     repetition: 3,
+                    minimumWPM: 40,
+                    minimumAccuracy: 100,
+                    WPMs: [],
+                    phrases: {},
+                    phrasesCurrentIndex: 0,
+                },
+                pangrams: {
+                    scope: 50,
+                    combination: 1,
+                    repetition: 1,
                     minimumWPM: 40,
                     minimumAccuracy: 100,
                     WPMs: [],
