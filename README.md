@@ -85,4 +85,9 @@ You could access the online version using GitHub Pages:
     - https://github.com/aleuxser/ngram-type-ru/
   - Hosted Version:
     - https://aleuxser.github.io/ngram-type-ru/
+- French
+  - Project Page:
+    - https://github.com/edmundlam/ngram-type-fr/
+  - Hosted Version:
+    - https://edmundlam.github.io/ngram-type-fr/
 
