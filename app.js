@@ -243,6 +243,11 @@ var ngramTypeConfig = {
         },
         refreshPhrases: function() {
             var dataSource = this.dataSource;
+
+            if (dataSource.combination < 1) {
+                dataSource.combination = 1
+            }
+
             dataSource.phrases = this.generatePhrases(dataSource.combination, dataSource.repetition);
             this.expectedPhrase = dataSource.phrases[0];
             dataSource.phrasesCurrentIndex = 0;
