@@ -321,7 +321,10 @@
                 </h4>
             </div>
             <div class="expected-phrase word text-white bg-primary mb-3">
-                {{ expectedPhrase }}
+                <span v-for="(word, index) in expectedPhrase.split(/(\s+)/)"
+                    v-bind:class="[ (index) === currentWordIndex ? 'text-white': 'text-muted' ]">
+                    {{ word }}
+                </span>
             </div>
             <div class="form-group input-fields">
                 <label class="col-form-label col-form-label-lg"></label>
