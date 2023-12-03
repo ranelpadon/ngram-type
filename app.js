@@ -333,18 +333,19 @@ var ngramTypeConfig = {
                 this.hitsWrong += 1;
             }
 
-            let expectedWords = this.expectedPhrase.split(/(\s+)/)
-            let typedWords = typedPhrase.split(/(\s+)/)
+            let expectedWords = this.expectedPhrase.split(/(\s+)/);
+            let typedWords = typedPhrase.split(/(\s+)/);
            
             // determine the current word index that a user is typing
-            let currentWordIndex = 0
+            let currentWordIndex = 0;
             for (let i = 0; i < typedWords.length; i++) {
               if (typedWords[i] === expectedWords[i]) {
-                currentWordIndex = i + 1
+                currentWordIndex = i + 1;
               } else {
-                break
+                break;
               }
             }
+            this.currentWordIndex = currentWordIndex;
 
             if (typedPhrase.trimEnd() === this.expectedPhrase) {
                 var currentTime = new Date().getTime() / 1000;
