@@ -393,6 +393,7 @@ var ngramTypeConfig = {
             this.hitsWrong = 0;
             this.typedPhrase = '';
             this.isInputCorrect = true;
+            this.currentWordIndex = 0;
         },
         nextPhrase: function() {
             this.resetCurrentPhraseMetrics();
