@@ -73,6 +73,7 @@ var ngramTypeConfig = {
 
             phrases: [],
             expectedPhrase: '',
+            currentWordIndex: 0,
             typedPhrase: '',
             startTime: '',
             hitsCorrect: 0,
@@ -337,6 +338,20 @@ var ngramTypeConfig = {
                 this.hitsWrong += 1;
             }
 
+            let expectedWords = this.expectedPhrase.split(/(\s+)/);
+            let typedWords = typedPhrase.split(/(\s+)/);
+           
+            // determine the current word index that a user is typing
+            let currentWordIndex = 0;
+            for (let i = 0; i < typedWords.length; i++) {
+              if (typedWords[i] === expectedWords[i]) {
+                currentWordIndex = i + 1;
+              } else {
+                break;
+              }
+            }
+            this.currentWordIndex = currentWordIndex;
+
             if (typedPhrase.trimEnd() === this.expectedPhrase) {
                 var currentTime = new Date().getTime() / 1000;
                 this.rawWPM = Math.round(
@@ -384,6 +399,7 @@ var ngramTypeConfig = {
             this.hitsWrong = 0;
             this.typedPhrase = '';
             this.isInputCorrect = true;
+            this.currentWordIndex = 0;
         },
         nextPhrase: function() {
             this.resetCurrentPhraseMetrics();
