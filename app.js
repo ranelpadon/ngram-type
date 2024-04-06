@@ -379,6 +379,13 @@ var ngramTypeConfig = {
                 this.nextPhrase();
             }
         },
+        preventSpace: function(e) {
+            // don't update `this.typedPhrase` if the first character entered is a space
+            if (e.key === ' ' && this.typedPhrase === '') {
+                e.preventDefault()
+                return
+            }
+        },
         resetCurrentPhraseMetrics: function() {
             this.hitsCorrect = 0;
             this.hitsWrong = 0;
