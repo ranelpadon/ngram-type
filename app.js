@@ -318,6 +318,14 @@ var ngramTypeConfig = {
 
             this.resumeTimer();
 
+            var substitutions = [
+                ["’", "'"],
+                [" ", " "],
+            ];
+            for (var subst of substitutions) {
+                typedPhrase = typedPhrase.replaceAll(subst[0], subst[1]);
+            }
+
             if (this.expectedPhrase.startsWith(typedPhrase)) {
                 if (this.data.soundCorrectLetterEnabled) {
                     this.stopCurrentPlayingSound();
