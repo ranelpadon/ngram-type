@@ -329,7 +329,7 @@
                     :class="{'form-control': true, 'form-control-lg': true, 'incorrect-input': !isInputCorrect}"
                     id="input-typing" type="text" autocorrect="off" autocapitalize="none"
                     placeholder="Re-type if failed, press <TAB> or <ESC> to reset" spellcheck="false"
-                    v-on:keyup="keyHandler">
+                    v-on:keydown="keyHandler">
             </div>
         </div>
         <!--Lesson end-->
