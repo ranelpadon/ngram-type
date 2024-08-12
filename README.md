@@ -90,4 +90,9 @@ You could access the online version using GitHub Pages:
     - https://github.com/edmundlam/ngram-type-fr/
   - Hosted Version:
     - https://edmundlam.github.io/ngram-type-fr/
+- German
+  - Project Page:
+    -  https://github.com/micharied/ngram-type-gr/
+  - Hosted Version:
+    - https://micharied.github.io/ngram-type-gr/
 
