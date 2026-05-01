@@ -19,6 +19,19 @@ body {
     max-width: 10rem;
 }
 
+.ema-settings-module {
+    max-width: 12rem;
+}
+
+.ema-settings-group-label {
+    margin: 0.65rem 0 0.15rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+}
+
 .card-body {
     /*             margin-top: 20px;
     min-height: 480px; */

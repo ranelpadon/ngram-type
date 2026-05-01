@@ -43,18 +43,13 @@
     <!-- Timer -->
     <script src="./assets/js/moment.min.js"></script>
     <script src="./assets/js/ez.countimer.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('.timer').countimer({
-                autoStart: false,
-            });
-        });
-    </script>
 </head>
 
 <body>
     <div id="app" class="d-flex flex-column">
+        <div class="alert alert-warning text-center mb-0" role="alert" style="border-radius: 0;">
+            <strong>Development Version:</strong> Your stats may be wiped out.
+        </div>
 
         <!--Navbar (sound toggle and timer) start-->
         <nav class="navbar bg-dark justify-content-center">
@@ -253,6 +248,60 @@
                         class="form-control form-control-sm" type="number" min="1">
                 </div>
             </fieldset>
+            <fieldset class="ema-settings-module col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                <legend>EMA</legend>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input
+                            type="checkbox"
+                            class="custom-control-input"
+                            id="lesson-ema-enabled"
+                            :checked="data.lessonGenerationMode === 'ema'"
+                            v-on:change="data.lessonGenerationMode = $event.target.checked ? 'ema' : 'random'"
+                        >
+                        <label class="custom-control-label" for="lesson-ema-enabled"
+                            title="When disabled, lesson order is a random shuffle. When enabled, n-grams are weighted by stored EMA scores (weaker / less practiced first).">
+                            EMA-weighted lesson order
+                        </label>
+                    </div>
+                    <div>
+                        <p class="ema-settings-group-label">Learning</p>
+                        <label class="col-form-label col-form-label-sm"
+                            title="Higher α: each completed phrase updates scores more from the latest attempt. Default 0.2. Use 0 to stop learning from recent performance.">
+                            α
+                        </label>
+                        <input v-model.number="data.emaLearningConfig.alpha" class="form-control form-control-sm" type="number"
+                            min="0" max="2" step="0.1">
+					</div>
+					<div v-show="data.lessonGenerationMode === 'ema'">
+                        <p class="ema-settings-group-label">Generation</p>
+                        <label class="col-form-label col-form-label-sm"
+                            title="Exponent applied to the combined weight when picking n-grams. 0 flattens differences; higher values favor targeting weaker scores. Default 1.">
+                            Overall exponent
+                        </label>
+                        <input v-model.number="data.emaGenerationConfig.generalBias" class="form-control form-control-sm" type="number"
+                            min="0" max="5" step="0.1">
+                        <label class="col-form-label col-form-label-sm"
+                            title="How much normalized duration (vs cohort) influences lesson weight. Default 1.">
+                            Speed bias
+                        </label>
+                        <input v-model.number="data.emaGenerationConfig.speedBias" class="form-control form-control-sm" type="number"
+                            min="-1" max="1" step="0.1">
+                        <label class="col-form-label col-form-label-sm"
+                            title="How much normalized mistake count influences lesson weight. Default 1.">
+                            Mistakes bias
+                        </label>
+                        <input v-model.number="data.emaGenerationConfig.mistakesBias" class="form-control form-control-sm" type="number"
+                            min="-1" max="1" step="0.1">
+                        <label class="col-form-label col-form-label-sm"
+                            title="How much normalized consistency influences lesson weight. Default 1.">
+                            Consistency bias
+                        </label>
+                        <input v-model.number="data.emaGenerationConfig.consistencyBias" class="form-control form-control-sm" type="number"
+                            min="-1" max="1" step="0.1">
+                    </div>
+                </div>
+            </fieldset>
             <fieldset class="settings-module col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-12">
                 <legend>Threshold</legend>
                 <div class="form-group">
@@ -295,7 +344,7 @@
                     <div class="modal-body">
                         <p>
                             There are data schema changes to integrate the scoping of sources (i.e. the dynamic <b>Top 50</b>, <b>Top 100</b>, <b>Top 150</b>, or <b>Top 200</b>)
-                            for more flexible and comprehensive training.
+                            for more flexible and comprehensive training. The app stores per–n-gram EMA timing, optional EMA-weighted lesson order, and global EMA parameters (α, penalty).
                         </p>
                         <p>
                             This means that your saved data will be reset, but you could easily replicate your previous settings.
@@ -312,13 +361,16 @@
 
         <!--Lesson start-->
         <div class="px-4">
-            <div class="lesson-index center">
+            <div v-show="data.lessonGenerationMode === 'random'" class="lesson-index center">
                 <h4 v-show="data[data['source']].phrases.length">
                     Lesson {{ data[data['source']].phrasesCurrentIndex + 1 }} / {{ data[data['source']].phrases.length }}
                 </h4>
                 <h4 v-show="!data[data['source']].phrases.length">
                     Click the "Custom" link to input words.
                 </h4>
+            </div>
+            <div v-show="data.lessonGenerationMode === 'ema'" class="lesson-index center">
+                <h4></h4>
             </div>
             <div class="expected-phrase word text-white bg-primary mb-3">
                 {{ expectedPhrase }}
@@ -329,7 +381,7 @@
                     :class="{'form-control': true, 'form-control-lg': true, 'incorrect-input': !isInputCorrect}"
                     id="input-typing" type="text" autocorrect="off" autocapitalize="none"
                     placeholder="Re-type if failed, press <TAB> or <ESC> to reset" spellcheck="false"
-                    v-on:keyup="keyHandler">
+                    v-on:input="keyHandler">
             </div>
         </div>
         <!--Lesson end-->
@@ -339,6 +391,10 @@
             <h4>WPM: {{ rawWPM }} </h4>
             &nbsp; &nbsp; &nbsp; &nbsp; <h4>Accuracy: {{ accuracy }} % </h4>
             &nbsp; &nbsp; &nbsp; &nbsp; <h4>Average WPM: {{ averageWPM }} </h4>
+        </div>
+        <div class="center small text-white-50 mt-2 mb-2">
+            <button type="button" class="btn btn-sm btn-outline-light" v-on:click="downloadNgramEmaCsv">Download n-gram EMA (CSV)</button>
+            <button type="button" class="btn btn-sm btn-outline-light ml-1" v-on:click="copyNgramEmaCsv" title="Copy ngram,ema_ms to the clipboard">Copy n-gram EMA</button>
         </div>
         <!--Stats end-->
 
